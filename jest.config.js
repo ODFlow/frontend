@@ -1,13 +1,10 @@
 module.exports = {
-  preset: 'ts-jest',
-  testEnvironment: 'jsdom',
-  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
-  moduleNameMapper: {
-    '^@/(.*)$': '<rootDir>/src/$1',
-    '\\.(css|less|scss|sass)$': 'identity-obj-proxy'
-  },
-  testMatch: ['**/__tests__/**/*.ts?(x)', '**/?(*.)+(spec|test).ts?(x)'],
-  transform: {
-    '^.+\\.(ts|tsx)$': 'ts-jest'
-  }
+  testEnvironment: 'node',
+  verbose: true,
+  // Setup a test database for testing
+  setupFilesAfterEnv: ['<rootDir>/tests/setup.js'],
+  // Ignore certain directories
+  testPathIgnorePatterns: ['/node_modules/'],
+  // Look for test files in the tests directory
+  testMatch: ['**/tests/**/*.test.js']
 }; 
