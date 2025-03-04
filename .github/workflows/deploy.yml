@@ -2,16 +2,18 @@ name: Deploy
 
 on:
   push:
-    branches: [ main ]
+    branches:
+    - ldtrees
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
     
     steps:
+    - name: Code checkout
     - uses: actions/checkout@v3
     
-    - name: Set up Node.js
+    - name: Node.js setup
       uses: actions/setup-node@v3
       with:
         node-version: '23'
@@ -21,28 +23,15 @@ jobs:
       run: npm ci
       
     - name: Build
-      run: npm run build
+      run: |
+        npm run build
+      continue-on-error: false
       
-    - name: Deploy to Vercel
-      uses: vercel/actions/cli@master
-      with:
-        vercel-token: ${{ secrets.VERCEL_TOKEN }}
-        vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-        vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-        vercel-args: '--prod'
-      env:
-        VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-        VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-        VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-
-    # Add environment variables if needed
-    env:
-      CI: true
-      
-    # Here you would add your deployment step. For example, if deploying to Vercel:
-    # - name: Deploy to Vercel
-    #   uses: amondnet/vercel-action@v20
-    #   with:
-    #     vercel-token: ${{ secrets.VERCEL_TOKEN }}
-    #     vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-    #     vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }} 
+      - name: Build errors?
+      run: |
+        if [ $? -ne 0]; then
+          echo "Build failed!"
+          exit 1
+        else
+          echo "Success"
+        fi
