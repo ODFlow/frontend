@@ -27,9 +27,9 @@ jobs:
         npm run build
       continue-on-error: false
       
-      - name: Build errors?
+    - name: Build errors?
       run: |
-        if [ $? -ne 0]; then
+        if [ $? -ne 0 ]; then
           echo "Build failed!"
           exit 1
         else
