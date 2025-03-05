@@ -19,7 +19,7 @@ jobs:
           cache: 'npm'
 
       - name: dir change
-        uses: cd demola-opendata
+        run: cd demola-opendata
 
       - name: Install dependencies
         run: npm ci
