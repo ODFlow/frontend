@@ -1,0 +1,41 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+    - ldtrees
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code checkout
+        uses: actions/checkout@v3
+    
+      - name: Node.js setup
+        uses: actions/setup-node@v3
+        with:
+          node-version: '23'
+          cache: 'npm'
+          cache-dependency-path: demola-opendata/package-lock.json
+
+
+      - name: Install dependencies
+        working-directory: demola-opendata
+        run: npm ci
+      
+      - name: Build
+        working-directory: demola-opendata
+        run: |
+          npm run build
+        continue-on-error: false
+      
+      - name: Build errors?
+        working-directory: demola-opendata
+        run: |
+          if [ $? -ne 0 ]; then
+            echo "Build failed!"
+            exit 1
+          else
+            echo "Success"
+          fi
