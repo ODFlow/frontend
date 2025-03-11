@@ -8,7 +8,7 @@ import pandas as pd
 import requests
 
 
-class TrafficAccidentFetcher:
+class EmploymentRateFetcher:
     def __init__(self, api_url: str, query_parameters_file: str, db_name: str):
         self.api_url = api_url
         self.query_parameters_file = query_parameters_file
@@ -81,6 +81,6 @@ if __name__ == '__main__':
     URL = 'https://pxdata.stat.fi:443/PxWeb/api/v1/en/StatFin/tyonv/statfin_tyonv_pxt_12r5.px'
     JSON_PARAMS = 'employment_rate.json'
     DB = './employment_rate.sqlite3'
-    f = TrafficAccidentFetcher(api_url=URL, query_parameters_file=JSON_PARAMS, db_name=DB)
+    f = EmploymentRateFetcher(api_url=URL, query_parameters_file=JSON_PARAMS, db_name=DB)
     f.fetch_parse_save()
 

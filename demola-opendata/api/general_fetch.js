@@ -3,6 +3,7 @@ import axios from 'axios'
 import { useState } from 'react';
 import { trafficQuery } from './sq-api_table_statfin_ton_pxt_12qh.px';
 import { employmentRate } from './sq-api_table_statfin_tyonv_pxt_12r5.px';
+import { generalAge } from './sq-api_table_statfin_vaerak_pxt_11ra.px';
 
 const GeneralFetch = () => {
 const [city, setCity] = useState(null);
@@ -10,8 +11,8 @@ const [error, setError] = useState(null);
 const [response, setResponse] = useState(null);
 
 // const url = 'https://pxdata.stat.fi:443/PxWeb/api/v1/en/StatFin/ton/statfin_ton_pxt_12qh.px'
-const url = 'https://pxdata.stat.fi:443/PxWeb/api/v1/en/StatFin/tyonv/statfin_tyonv_pxt_12r5.px'
-
+// const url = 'https://pxdata.stat.fi:443/PxWeb/api/v1/en/StatFin/tyonv/statfin_tyonv_pxt_12r5.px'
+const url = 'https://pxdata.stat.fi:443/PxWeb/api/v1/en/StatFin/vaerak/statfin_vaerak_pxt_11ra.px'
 
 
 
@@ -20,11 +21,11 @@ const url = 'https://pxdata.stat.fi:443/PxWeb/api/v1/en/StatFin/tyonv/statfin_ty
 const tryReq = async (event) => {
     event.preventDefault();
     try {
-        const re = await axios.post(url, employmentRate.queryObj);
+        const re = await axios.post(url, generalAge.queryObj);
         setResponse(re.data);
         console.log(re.data.dimension.Alue.category.label);
         //console.log(re.data.dimension.Vuosi.category.label);
-        console.log(re.data.dimension.Kuukausi.category.label);
+        //console.log(re.data.dimension.Kuukausi.category.label);
         console.log(re.data.dimension.Tiedot.category.label);
         console.log(re.data.value);
     } catch (e) {
