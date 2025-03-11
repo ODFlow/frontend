@@ -67,6 +67,8 @@ const jsonq =
     }
 }
 
+
+
 const tryReq = async (event) => {
     event.preventDefault();
     try {
@@ -75,6 +77,22 @@ const tryReq = async (event) => {
     } catch (e) {
         setError(err);
     } finally {}
+}
+
+const parseData = (response) => {
+  const { dimension, value } = response;
+  const formattedData = [];
+
+ const areas = dimension.Alue.category.label;
+ const sex = dimension.Sukupuoli.category.label;
+ const age = dimension.Ikä.category.label;
+
+
+const labels = [
+  { label: "Area", data: areas },
+  { label: "Sex", data: sex },
+  { label: "Age", data: age },
+];
 }
 
 return (
