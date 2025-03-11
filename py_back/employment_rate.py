@@ -30,7 +30,8 @@ class EmploymentRateFetcher:
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
                         area TEXT NOT NULL,
                         timeframe TEXT NOT NULL,
-                        value INTEGER NOT NULL,
+                        description TEXT NOT NULL,
+                        value REAL NOT NULL,
                         last_updated TEXT NOT NULL,
                         UNIQUE (area, timeframe)
                     )
@@ -39,17 +40,17 @@ class EmploymentRateFetcher:
     def parse_data(data: Dict[str, Any]) -> pd.DataFrame:
         areas = list(data['dimension']['Alue']['category']['label'].values())
         timeframe = list(data['dimension']['Kuukausi']['category']['label'].values())
-        employment_type = list(data['dimension']['Tiedot']['category']['label'].values())
+        description = list(data['dimension']['Tiedot']['category']['label'].values())
 
-        combinations = product(areas, timeframe, employment_type)
+        combinations = product(areas, timeframe, description)
         values = data['value']
 
         records = []
-        for idx, (area, timeframe, employment_type) in enumerate(combinations):
+        for idx, (area, timeframe, description) in enumerate(combinations):
             value = values[idx]
-            records.append((idx, area, timeframe, employment_type, value, LAST_UPDATED_TIME))
+            records.append((idx, area, timeframe, description, value, LAST_UPDATED_TIME))
 
-        return pd.DataFrame(records, columns=['id', 'area', 'timeframe', 'employment_type', 'value', 'last_updated'])
+        return pd.DataFrame(records, columns=['id', 'area', 'timeframe', 'description', 'value', 'last_updated'])
 
     def save_data(self, df: pd.DataFrame):
         conn = sqlite3.connect(self.db_name)
