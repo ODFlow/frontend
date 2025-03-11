@@ -25,7 +25,8 @@ class TrafficAccidentFetcher:
         response.raise_for_status()
         return response.json()
 
-    def create_table(self, cursor: sqlite3.Cursor):
+    @staticmethod
+    def create_table(cursor: sqlite3.Cursor):
         cursor.execute('''
                     CREATE TABLE IF NOT EXISTS traffic_accidents (
                         accident_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -37,7 +38,8 @@ class TrafficAccidentFetcher:
                         UNIQUE (area, year, accident_type)
                     )
                 ''')
-    def parse_data(self, data: Dict[str, Any]) -> pd.DataFrame:
+    @staticmethod
+    def parse_data(data: Dict[str, Any]) -> pd.DataFrame:
         areas = list(data['dimension']['Alue']['category']['label'].values())
         years = list(data['dimension']['Vuosi']['category']['label'].values())
         accident_types = list(data['dimension']['Tiedot']['category']['label'].values())

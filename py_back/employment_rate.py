@@ -23,7 +23,8 @@ class TrafficAccidentFetcher:
         response.raise_for_status()
         return response.json()
 
-    def create_table(self, cursor: sqlite3.Cursor):
+    @staticmethod
+    def create_table(cursor: sqlite3.Cursor):
         cursor.execute('''
                     CREATE TABLE IF NOT EXISTS employment_rate (
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -34,7 +35,8 @@ class TrafficAccidentFetcher:
                         UNIQUE (area, timeframe)
                     )
                 ''')
-    def parse_data(self, data: Dict[str, Any]) -> pd.DataFrame:
+    @staticmethod
+    def parse_data(data: Dict[str, Any]) -> pd.DataFrame:
         areas = list(data['dimension']['Alue']['category']['label'].values())
         timeframe = list(data['dimension']['Kuukausi']['category']['label'].values())
         employment_type = list(data['dimension']['Tiedot']['category']['label'].values())
