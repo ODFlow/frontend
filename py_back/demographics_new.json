@@ -328,8 +328,9 @@
           "vaesto_alle15_p",
           "vaesto_15_64_p",
           "vaesto_yli64_p",
-          "tal_huoltos",
-          "vaesto_keski_ika"
+          "dem_huoltos",
+          "vaesto_keski_ika",
+          "vaesto_tausta_ulk_p"
         ]
       }
     },

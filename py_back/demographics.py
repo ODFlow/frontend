@@ -74,7 +74,7 @@ class DemographicsFetcher:
 if __name__ == '__main__':
     LAST_UPDATED_TIME = datetime.now()
     URL = 'https://pxdata.stat.fi:443/PxWeb/api/v1/en/StatFin/vaerak/statfin_vaerak_pxt_11ra.px'
-    JSON_PARAMS = './demographics.json'
+    JSON_PARAMS = './demographics_new.json'
     DB = './combined_db.sqlite3'
     f = DemographicsFetcher(api_url=URL, query_parameters_file=JSON_PARAMS, db_name=DB)
     f.fetch_parse_save()
