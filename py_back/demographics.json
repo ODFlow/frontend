@@ -324,7 +324,13 @@
         "filter": "item",
         "values": [
           "vaesto",
-          "vaesto_keski_ika"
+          "kokmuutos_p",
+          "vaesto_alle15_p",
+          "vaesto_15_64_p",
+          "vaesto_yli64_p",
+          "dem_huoltos",
+          "vaesto_keski_ika",
+          "vaesto_tausta_ulk_p"
         ]
       }
     },
