@@ -7,7 +7,7 @@ from typing import Dict, Any
 import pandas as pd
 import requests
 
-class DemographicsFetcher:
+class EducationFetcher:
     def __init__(self, api_url: str, query_parameters_file: str, db_name: str):
         self.api_url = api_url
         self.query_parameters_file = query_parameters_file
@@ -78,7 +78,7 @@ if __name__ == '__main__':
     URL = 'https://pxdata.stat.fi:443/PxWeb/api/v1/en/StatFin/vkour/statfin_vkour_pxt_12bq.px'
     JSON_PARAMS = './education.json'
     DB = './combined_db.sqlite3'
-    f = DemographicsFetcher(api_url=URL, query_parameters_file=JSON_PARAMS, db_name=DB)
+    f = EducationFetcher(api_url=URL, query_parameters_file=JSON_PARAMS, db_name=DB)
     f.fetch_parse_save()
 
 
