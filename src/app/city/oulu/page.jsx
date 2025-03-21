@@ -14,22 +14,39 @@ const cityData = {
     population: "331k",
     avgAge: "27 yr",
     safetyRating: "72 %",
-    description: "Oulu is a vibrant city in northern Finland, known for its technology industry, innovative startups, and strong education sector, including the University of Oulu."
+    nationalAvgSafety: "68 %",
+    yearOverYearChange: "+3%",
+    description: "Oulu is a vibrant city in northern Finland, known for its technology industry, innovative startups, and strong education sector, including the University of Oulu.",
+    lastUpdated: "March 2024"
   },
   helsinki: {
     name: "Helsinki",
     population: "1.3M",
     avgAge: "41 yr",
     safetyRating: "85 %",
-    description: "Helsinki is the capital of Finland and a vibrant coastal city known for design, technology, and a high quality of life."
+    nationalAvgSafety: "68 %",
+    yearOverYearChange: "+1%",
+    description: "Helsinki is the capital of Finland and a vibrant coastal city known for design, technology, and a high quality of life.",
+    lastUpdated: "March 2024"
   },
   tampere: {
     name: "Tampere",
     population: "252k", 
     avgAge: "36 yr",
     safetyRating: "80 %",
-    description: "Tampere is the third-largest city in Finland, known for its industrial heritage, universities, and cultural scenes."
+    nationalAvgSafety: "68 %",
+    yearOverYearChange: "+2%",
+    description: "Tampere is the third-largest city in Finland, known for its industrial heritage, universities, and cultural scenes.",
+    lastUpdated: "March 2024"
   }
+}
+
+// Safety rating colors based on value ranges
+const getSafetyColor = (rating) => {
+  if (rating >= 80) return '#4CAF50'; // Green for very safe
+  if (rating >= 60) return '#9b59b6'; // Purple for moderately safe
+  if (rating >= 40) return '#FF9800'; // Orange for caution
+  return '#F44336'; // Red for unsafe
 }
 
 // Unemployment data from 2015-2025
@@ -44,25 +61,45 @@ function UnemploymentChart() {
   const years = [2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025];
   const unemploymentData = [6.9, 5.7, 5.2, 9.1, 8.3, 7.6, 6.8, 6.4, 6.1];
   
+  // National average data for comparison
+  const nationalAvgData = [7.4, 6.6, 6.1, 9.5, 8.9, 8.1, 7.5, 7.2, 6.9];
+
   // Crime data for the same period
   const crimeData = [1510, 1420, 1320, 1680, 1790, 1550, 1380, 1210, 1150];
 
+  // Current year index (2023)
+  const currentYearIndex = 6;
+
   // Use a ref to measure container and resize chart accordingly
   const chartContainerRef = useRef(null);
-  const [chartDimensions, setChartDimensions] = useState({ width: 300, height: 200 });
+  const [chartDimensions, setChartDimensions] = useState({ width: 300, height: 220 });
   
   useEffect(() => {
     if (chartContainerRef.current) {
       const { width } = chartContainerRef.current.getBoundingClientRect();
-      setChartDimensions({ width: width, height: 200 });
+      setChartDimensions({ width: width, height: 220 });
+      
+      // Add resize listener for responsiveness
+      const handleResize = () => {
+        if (chartContainerRef.current) {
+          const { width } = chartContainerRef.current.getBoundingClientRect();
+          setChartDimensions({ width: width, height: 220 });
+        }
+      };
+      
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
     }
   }, []);
 
   return (
-    <Card className="bg-gray-900 p-6 rounded-lg text-[#D5D5D5]">
-      <h2 className="text-2xl font-bold mb-6 text-[#D5D5D5]">Unemployment</h2>
+    <Card className="bg-gray-900 p-6 rounded-lg text-[#D5D5D5] flex flex-col h-full">
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-bold text-[#D5D5D5]">Unemployment</h2>
+        <span className="text-sm bg-gray-800 px-2 py-1 rounded">Updated: March 2024</span>
+      </div>
       
-      <div className="h-56 w-full relative">
+      <div className="h-64 w-full relative" ref={chartContainerRef}>
         <LineChart
           xAxis={[{ 
             data: years,
@@ -72,7 +109,8 @@ function UnemploymentChart() {
             },
             labelStyle: {
               fill: '#D5D5D5',
-            }
+            },
+            scaleType: 'band',
           }]}
           yAxis={[{
             min: 1,  // Starting from 1% as requested
@@ -85,16 +123,26 @@ function UnemploymentChart() {
           series={[
             {
               data: unemploymentData,
-              label: 'Unemployment Rate (%)',
+              label: 'Oulu',
               color: '#9b59b6',
               curve: 'linear',
               showMark: true,
               area: true,
+              valueFormatter: (value) => `${value}%`,
+            },
+            {
+              data: nationalAvgData,
+              label: 'National Avg',
+              color: '#D5D5D5',
+              curve: 'linear',
+              showMark: false,
+              lineStyle: { strokeDasharray: '5 5' },
+              valueFormatter: (value) => `${value}%`,
             }
           ]}
           width={chartDimensions.width}
           height={chartDimensions.height}
-          margin={{ top: 10, bottom: 30, left: 40, right: 10 }}
+          margin={{ top: 20, bottom: 40, left: 40, right: 10 }}
           sx={{
             '.MuiLineElement-root': {
               strokeWidth: 2,
@@ -110,18 +158,36 @@ function UnemploymentChart() {
               fill: '#D5D5D5'
             },
             '.MuiChartsLegend-label': {
-              fill: '#D5D5D5'
+              fill: '#D5D5D5',
+              fontSize: '12px',
+              fontWeight: 500,
+            },
+            '.MuiChartsLegend-series-0 .MuiChartsLegend-label': {
+              fill: '#9b59b6',
+            },
+            '.MuiChartsLegend-series-1 .MuiChartsLegend-label': {
+              fill: '#D5D5D5',
+            },
+            '.MuiChartsLegend-root': {
+              display: 'flex',
+              justifyContent: 'center',
+              marginTop: '20px',
             },
             backgroundColor: 'transparent',
           }}
           tooltip={{ 
             trigger: 'item',
-            formatter: (params) => {
-              return `Year: ${years[params.dataIndex]}\nUnemployment: ${params.value}%\nCrime cases: ${crimeData[params.dataIndex]}`
-            }
           }}
           slotProps={{
-            legend: { hidden: true }, // Hide legend to save space
+            legend: { 
+              hidden: false,
+              position: { vertical: 'bottom', horizontal: 'middle' },
+              padding: 0,
+              itemMarkWidth: 8,
+              itemMarkHeight: 8,
+              markGap: 5,
+              itemGap: 10,
+            }
           }}
         >
           <defs>
@@ -130,13 +196,146 @@ function UnemploymentChart() {
               <stop offset="100%" stopColor="#9b59b6" stopOpacity={0}/>
             </linearGradient>
           </defs>
+          
+          {/* Annotation for COVID-19 impact */}
+          <g transform={`translate(${40 + (chartDimensions.width - 50) * (3/8)}, 40)`}>
+            <text x="0" y="0" fill="#F44336" fontSize="10">
+              COVID-19
+            </text>
+            <line 
+              x1="0" 
+              y1="5" 
+              x2="0" 
+              y2="50"
+              stroke="#F44336"
+              strokeWidth="1"
+              strokeDasharray="2 2"
+            />
+          </g>
+          
+          {/* Mark for current year */}
+          <g transform={`translate(${40 + (chartDimensions.width - 50) * (6/8)}, 15)`}>
+            <text x="0" y="0" fill="#4CAF50" fontSize="10">
+              Current
+            </text>
+          </g>
         </LineChart>
       </div>
       
-      <div className="flex justify-between items-center mt-6">
-        <span className="text-sm text-blue-400">2025 Projection</span>
-        <button className="bg-gray-800 w-12 h-12 rounded-md flex items-center justify-center text-2xl text-[#D5D5D5]">
-          i
+      <div className="flex justify-center mt-4">
+        <button 
+          className="bg-[#D5D5D5] w-14 h-14 rounded-md flex items-center justify-center"
+          aria-label="More information about unemployment data"
+        >
+          <span className="text-3xl font-semibold text-gray-900">i</span>
+        </button>
+      </div>
+    </Card>
+  );
+}
+
+function TrafficAccidentsChart() {
+  // Sample data for traffic accidents
+  const categories = ['Cars', 'Pedestrians', 'Bicycles', 'Public Transport'];
+  const accidentData = [45, 15, 28, 12];
+
+  // Use a ref to measure container and resize chart accordingly
+  const chartContainerRef = useRef(null);
+  const [chartDimensions, setChartDimensions] = useState({ width: 300, height: 200 });
+  
+  useEffect(() => {
+    if (chartContainerRef.current) {
+      const { width } = chartContainerRef.current.getBoundingClientRect();
+      setChartDimensions({ width: width, height: 200 });
+      
+      const handleResize = () => {
+        if (chartContainerRef.current) {
+          const { width } = chartContainerRef.current.getBoundingClientRect();
+          setChartDimensions({ width: width, height: 200 });
+        }
+      };
+      
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
+    }
+  }, []);
+
+  return (
+    <Card className="bg-gray-900 p-6 rounded-lg text-[#D5D5D5] flex flex-col h-full">
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-bold text-[#D5D5D5]">Traffic accidents</h2>
+        <span className="text-sm bg-gray-800 px-2 py-1 rounded">2023</span>
+      </div>
+      
+      <div className="h-56 w-full relative" ref={chartContainerRef}>
+        <PieChart
+          series={[
+            {
+              data: [
+                { id: 0, value: accidentData[0], label: categories[0], color: '#9b59b6' },
+                { id: 1, value: accidentData[1], label: categories[1], color: '#3498db' },
+                { id: 2, value: accidentData[2], label: categories[2], color: '#2ecc71' },
+                { id: 3, value: accidentData[3], label: categories[3], color: '#f39c12' },
+              ],
+              highlightScope: { faded: 'global', highlighted: 'item' },
+              faded: { innerRadius: 0, additionalRadius: -10, color: 'gray' },
+              arcLabel: (item) => `${item.value}%`,
+              arcLabelMinAngle: 20,
+              cx: chartDimensions.width / 2,
+              cy: 100,
+            }
+          ]}
+          width={chartDimensions.width}
+          height={200}
+          margin={{ top: 0, bottom: 50, left: 0, right: 0 }}
+          slotProps={{
+            legend: {
+              direction: 'row',
+              position: { vertical: 'bottom', horizontal: 'middle' },
+              padding: { top: 20 },
+              itemMarkWidth: 8,
+              itemMarkHeight: 8,
+              markGap: 5,
+              itemGap: 10,
+            }
+          }}
+          sx={{
+            '.MuiChartsLegend-label': {
+              fill: '#D5D5D5',
+              fontSize: '10px',
+            },
+            '.MuiChartsLegend-root': {
+              display: 'flex',
+              justifyContent: 'center',
+            },
+            '.MuiChartsLegend-item': {
+              flexDirection: 'row',
+              alignItems: 'center',
+            },
+            '.MuiChartsPieArcLabel-root': {
+              fill: '#fff',
+              fontSize: '10px',
+              fontWeight: 'bold',
+            },
+          }}
+        />
+      </div>
+      
+      <div className="flex-grow"></div>
+      
+      <div className="flex justify-between items-center mb-4">
+        <div>
+          <span className="text-sm text-blue-400">Annual Report</span>
+          <div className="text-xs opacity-70 mt-1">Total incidents: 187</div>
+        </div>
+      </div>
+      
+      <div className="flex justify-center mb-6">
+        <button 
+          className="bg-[#D5D5D5] w-14 h-14 rounded-md flex items-center justify-center"
+          aria-label="More information about traffic accidents"
+        >
+          <span className="text-3xl font-semibold text-gray-900">i</span>
         </button>
       </div>
     </Card>
@@ -156,16 +355,20 @@ export default function CityPage() {
     population: "Unknown",
     avgAge: "Unknown",
     safetyRating: "72 %",
-    description: "No information available for this city."
-  }
+    nationalAvgSafety: "68 %",
+    yearOverYearChange: "0%",
+    description: "No information available for this city.",
+    lastUpdated: "Unknown"
+  };
 
   // Extract the safety rating as a number (removing % sign if present)
   const safetyRatingValue = parseInt(city.safetyRating, 10) || 72;
+  const safetyColor = getSafetyColor(safetyRatingValue);
   
   // Prepare data for the PieChart
   const safetyData = [
-    { id: 0, value: safetyRatingValue, color: '#6a0dad' },       // Purple for safety rating
-    { id: 1, value: 100 - safetyRatingValue, color: '#333333' }  // Dark gray for remainder
+    { id: 0, value: safetyRatingValue, color: safetyColor },
+    { id: 1, value: 100 - safetyRatingValue, color: '#333333' }
   ];
 
   return (
@@ -193,8 +396,12 @@ export default function CityPage() {
       {/* Main content grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-6">
         {/* Safety rating card with MUI Chart */}
-        <Card className="bg-gray-900 p-6 rounded-lg text-[#D5D5D5]">
-          <h2 className="text-2xl font-bold mb-1 text-[#D5D5D5]">Safety rating</h2>
+        <Card className="bg-gray-900 p-6 rounded-lg text-[#D5D5D5] flex flex-col h-full">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-2xl font-bold text-[#D5D5D5]">Safety rating</h2>
+            <span className="text-sm bg-gray-800 px-2 py-1 rounded">{city.lastUpdated}</span>
+          </div>
+          <p className="text-sm opacity-70 mb-6">National average: {city.nationalAvgSafety}</p>
           
           <div className="flex justify-center items-center relative" style={{ height: "200px" }}>
             <PieChart
@@ -218,17 +425,24 @@ export default function CityPage() {
               slotProps={{
                 legend: { hidden: true }
               }}
+              sx={{
+                filter: 'drop-shadow(0px 4px 6px rgba(106, 13, 173, 0.3))'
+              }}
             />
             
             {/* Overlay the percentage text */}
-            <div className="absolute" style={{ textAlign: 'center' }}>
+            <div className="absolute flex flex-col items-center" style={{ textAlign: 'center' }}>
               <span className="text-3xl font-bold text-[#D5D5D5]">{safetyRatingValue}%</span>
+              <span className="text-sm mt-1 text-green-400">{city.yearOverYearChange}</span>
             </div>
           </div>
           
-          <div className="flex justify-center mt-8">
-            <button className="bg-gray-800 w-12 h-12 rounded-md flex items-center justify-center text-2xl text-[#D5D5D5]">
-              i
+          <div className="flex justify-center mt-4">
+            <button 
+              className="bg-[#D5D5D5] w-14 h-14 rounded-md flex items-center justify-center"
+              aria-label="More information about safety rating"
+            >
+              <span className="text-3xl font-semibold text-gray-900">i</span>
             </button>
           </div>
         </Card>
@@ -237,35 +451,66 @@ export default function CityPage() {
         <Card className="bg-gray-900 p-6 rounded-lg flex flex-col items-center justify-between text-[#D5D5D5]">
           <h1 className="text-4xl font-bold mt-10 text-[#D5D5D5]">{city.name}</h1>
           
-          <div className="my-8">
+          <div className="my-8 relative">
             <svg width="120" height="100" viewBox="0 0 120 100" fill="none" xmlns="http://www.w3.org/2000/svg">
               <rect x="40" y="10" width="40" height="60" fill="white" />
               <rect x="10" y="40" width="40" height="40" fill="white" />
             </svg>
+            <div className="absolute top-0 right-0 bg-gray-800 text-xs px-2 py-1 rounded m-2">City Map</div>
           </div>
           
           <p className="text-center text-sm mb-4 text-[#D5D5D5]">
             {city.description}
           </p>
+          
+          <div className="w-full flex justify-center mt-4">
+            <Link href={`/city/${cityKey}/details`} className="text-blue-400 text-sm hover:underline">
+              View detailed statistics →
+            </Link>
+          </div>
         </Card>
 
         {/* Population card */}
-        <Card className="bg-gray-900 p-6 rounded-lg text-[#D5D5D5]">
-          <h2 className="text-2xl font-bold mb-8 text-center text-[#D5D5D5]">Population</h2>
-          
-          <div className="flex items-center justify-between mb-8">
-            <div className="text-4xl">👥</div>
-            <div className="text-4xl font-bold text-[#D5D5D5]">{city.population}</div>
+        <Card className="bg-gray-900 p-6 rounded-lg text-[#D5D5D5] flex flex-col h-full">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-2xl font-bold text-[#D5D5D5]">Population</h2>
           </div>
           
-          <div className="flex items-center justify-between mb-8">
-            <div className="text-4xl">🚶</div>
-            <div className="text-4xl font-bold text-[#D5D5D5]">{city.avgAge}</div>
+          <div className="flex items-center mb-16 px-4">
+            <div className="flex-shrink-0 w-16 flex justify-center">
+              <svg width="50" height="40" viewBox="0 0 50 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="25" cy="12" r="8" fill="#D5D5D5" />
+                <circle cx="10" cy="12" r="6" fill="#D5D5D5" />
+                <circle cx="40" cy="12" r="6" fill="#D5D5D5" />
+                <path d="M25 22C18.3726 22 13 27.3726 13 34H37C37 27.3726 31.6274 22 25 22Z" fill="#D5D5D5" />
+                <path d="M10 22C5.58172 22 2 25.5817 2 30H18C18 25.5817 14.4183 22 10 22Z" fill="#D5D5D5" />
+                <path d="M40 22C35.5817 22 32 25.5817 32 30H48C48 25.5817 44.4183 22 40 22Z" fill="#D5D5D5" />
+              </svg>
+            </div>
+            <div className="flex-grow flex justify-end">
+              <span className="text-6xl font-bold">{city.population}</span>
+            </div>
           </div>
           
-          <div className="flex justify-center">
-            <button className="bg-gray-800 w-12 h-12 rounded-md flex items-center justify-center text-2xl text-[#D5D5D5]">
-              i
+          <div className="flex items-center mb-16 px-4">
+            <div className="flex-shrink-0 w-16 flex justify-center">
+              <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="20" cy="10" r="8" fill="#D5D5D5" />
+                <path d="M28 32L20 15L12 32" stroke="#D5D5D5" strokeWidth="4" />
+                <path d="M14 25H26" stroke="#D5D5D5" strokeWidth="4" />
+              </svg>
+            </div>
+            <div className="flex-grow flex justify-end">
+              <span className="text-6xl font-bold">{city.avgAge}</span>
+            </div>
+          </div>
+          
+          <div className="flex justify-center mt-4">
+            <button 
+              className="bg-[#D5D5D5] w-14 h-14 rounded-md flex items-center justify-center"
+              aria-label="More information about population statistics"
+            >
+              <span className="text-3xl font-semibold text-gray-900">i</span>
             </button>
           </div>
         </Card>
@@ -276,27 +521,15 @@ export default function CityPage() {
         {/* Empty space for layout balance */}
         <div></div>
 
-        {/* Traffic accidents chart */}
-        <Card className="bg-gray-900 p-6 rounded-lg text-[#D5D5D5]">
-          <h2 className="text-2xl font-bold mb-6 text-[#D5D5D5]">Traffic accidents</h2>
-          
-          <div className="h-56 bg-gradient-to-t from-purple-900 to-transparent rounded relative mb-4">
-            {/* This would be a chart in a real implementation */}
-            <div className="absolute bottom-0 left-0 w-full flex justify-between text-xs text-[#D5D5D5] px-2">
-              <span>Technology</span>
-              <span>Energy</span>
-              <span>Tech</span>
-            </div>
-          </div>
-           
-          <div className="flex justify-between items-center">
-            <span className="text-sm text-blue-400">2022</span>
-            <button className="bg-gray-800 w-12 h-12 rounded-md flex items-center justify-center text-2xl text-[#D5D5D5]">
-              i
-            </button>
-          </div>
-        </Card>
+        {/* Traffic accidents chart - replaced with improved version */}
+        <TrafficAccidentsChart />
       </div>
+      
+      {/* Footer with data source information */}
+      <footer className="p-4 border-t border-gray-800 text-center text-sm text-gray-500">
+        <p>Data sourced from Statistics Finland (Tilastokeskus) | Last updated: {city.lastUpdated}</p>
+        <p className="mt-1">© 2024 Finland Open Data Project</p>
+      </footer>
     </div>
   )
 } 
