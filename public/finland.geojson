@@ -1,0 +1,121 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+      {
+        "type": "Feature",
+        "properties": {
+          "name": "Finland",
+          "region": "Northern Finland"
+        },
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [24.7, 65.7],
+              [25.4, 65.5],
+              [25.8, 64.8],
+              [25.0, 64.5],
+              [24.7, 65.7]
+            ]
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "name": "Finland",
+          "region": "Southern Finland"
+        },
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [24.9, 60.1],
+              [25.4, 60.3],
+              [25.8, 60.0],
+              [25.0, 59.8],
+              [24.9, 60.1]
+            ]
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "name": "Finland",
+          "region": "Western Finland"
+        },
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [22.2, 62.2],
+              [22.8, 62.4],
+              [23.1, 62.0],
+              [22.5, 61.8],
+              [22.2, 62.2]
+            ]
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "name": "Finland",
+          "region": "Eastern Finland"
+        },
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [27.6, 62.8],
+              [28.2, 63.0],
+              [28.5, 62.6],
+              [27.9, 62.4],
+              [27.6, 62.8]
+            ]
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "name": "Finland",
+          "region": "Central Finland"
+        },
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [25.7, 62.2],
+              [26.3, 62.4],
+              [26.6, 62.0],
+              [26.0, 61.8],
+              [25.7, 62.2]
+            ]
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "name": "Finland",
+          "region": "Lapland"
+        },
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [25.7, 66.5],
+              [26.3, 66.7],
+              [26.6, 66.3],
+              [26.0, 66.1],
+              [25.7, 66.5]
+            ]
+          ]
+        }
+      }
+    ]
+  }
+  
+  
