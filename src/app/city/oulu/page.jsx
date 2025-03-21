@@ -43,10 +43,10 @@ const cityData = {
 
 // Safety rating colors based on value ranges
 const getSafetyColor = (rating) => {
-  if (rating >= 80) return '#4CAF50'; // Green for very safe
-  if (rating >= 60) return '#9b59b6'; // Purple for moderately safe
-  if (rating >= 40) return '#FF9800'; // Orange for caution
-  return '#F44336'; // Red for unsafe
+  if (rating >= 80) return '#6254b5'; // Green for very safe
+  if (rating >= 60) return '#7165bc'; // Purple for moderately safe
+  if (rating >= 40) return '#8176c3'; // Orange for caution
+  return '#9187cb'; // Red for unsafe
 }
 
 // Unemployment data from 2015-2025
@@ -124,7 +124,7 @@ function UnemploymentChart() {
             {
               data: unemploymentData,
               label: 'Oulu',
-              color: '#9b59b6',
+              color: '#6254B5',
               curve: 'linear',
               showMark: true,
               area: true,
@@ -272,10 +272,10 @@ function TrafficAccidentsChart() {
           series={[
             {
               data: [
-                { id: 0, value: accidentData[0], label: categories[0], color: '#9b59b6' },
-                { id: 1, value: accidentData[1], label: categories[1], color: '#3498db' },
-                { id: 2, value: accidentData[2], label: categories[2], color: '#2ecc71' },
-                { id: 3, value: accidentData[3], label: categories[3], color: '#f39c12' },
+                { id: 0, value: accidentData[0], label: categories[0], color: '#584ba2' },
+                { id: 1, value: accidentData[1], label: categories[1], color: '#7165bc' },
+                { id: 2, value: accidentData[2], label: categories[2], color: '#a098d2' },
+                { id: 3, value: accidentData[3], label: categories[3], color: '#4e4390' },
               ],
               highlightScope: { faded: 'global', highlighted: 'item' },
               faded: { innerRadius: 0, additionalRadius: -10, color: 'gray' },
@@ -354,7 +354,7 @@ export default function CityPage() {
     name: cityNameParam || 'Unknown City',
     population: "Unknown",
     avgAge: "Unknown",
-    safetyRating: "72 %",
+    safetyRating: "70 %",
     nationalAvgSafety: "68 %",
     yearOverYearChange: "0%",
     description: "No information available for this city.",
@@ -368,7 +368,7 @@ export default function CityPage() {
   // Prepare data for the PieChart
   const safetyData = [
     { id: 0, value: safetyRatingValue, color: safetyColor },
-    { id: 1, value: 100 - safetyRatingValue, color: '#333333' }
+    { id: 1, value: 100 - safetyRatingValue, color: '#302D43' }
   ];
 
   return (
@@ -395,7 +395,8 @@ export default function CityPage() {
 
       {/* Main content grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-6">
-        {/* Safety rating card with MUI Chart */}
+        
+        
         <Card className="bg-gray-900 p-6 rounded-lg text-[#D5D5D5] flex flex-col h-full">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-2xl font-bold text-[#D5D5D5]">Safety rating</h2>
@@ -432,8 +433,8 @@ export default function CityPage() {
             
             {/* Overlay the percentage text */}
             <div className="absolute flex flex-col items-center" style={{ textAlign: 'center' }}>
-              <span className="text-3xl font-bold text-[#D5D5D5]">{safetyRatingValue}%</span>
-              <span className="text-sm mt-1 text-green-400">{city.yearOverYearChange}</span>
+              <span className="text-3xl font-bold text-[#D5D5D5]"> {safetyRatingValue}% </span>
+              <span className="text-sm mt-1 text-green-400"> {city.yearOverYearChange} </span>
             </div>
           </div>
           
@@ -447,8 +448,8 @@ export default function CityPage() {
           </div>
         </Card>
 
-        {/* City info card */}
-        <Card className="bg-gray-900 p-6 rounded-lg flex flex-col items-center justify-between text-[#D5D5D5]">
+
+        <Card className="bg-gray-900 p-6 rounded-lg flex flex-col items-center justify-between text-[#D5D5D5] md:row-span-2">
           <h1 className="text-4xl font-bold mt-10 text-[#D5D5D5]">{city.name}</h1>
           
           <div className="my-8 relative">
@@ -470,12 +471,14 @@ export default function CityPage() {
           </div>
         </Card>
 
+
         {/* Population card */}
         <Card className="bg-gray-900 p-6 rounded-lg text-[#D5D5D5] flex flex-col h-full">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-2xl font-bold text-[#D5D5D5]">Population</h2>
           </div>
           
+
           <div className="flex items-center mb-16 px-4">
             <div className="flex-shrink-0 w-16 flex justify-center">
               <svg width="50" height="40" viewBox="0 0 50 40" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -487,8 +490,8 @@ export default function CityPage() {
                 <path d="M40 22C35.5817 22 32 25.5817 32 30H48C48 25.5817 44.4183 22 40 22Z" fill="#D5D5D5" />
               </svg>
             </div>
-            <div className="flex-grow flex justify-end">
-              <span className="text-6xl font-bold">{city.population}</span>
+            <div className="flex-grow flex justify-center">
+              <div className="text-4xl font-bold"> {city.population} </div>
             </div>
           </div>
           
@@ -500,8 +503,8 @@ export default function CityPage() {
                 <path d="M14 25H26" stroke="#D5D5D5" strokeWidth="4" />
               </svg>
             </div>
-            <div className="flex-grow flex justify-end">
-              <span className="text-6xl font-bold">{city.avgAge}</span>
+            <div className="flex-grow flex justify-center">
+              <span className="text-4xl font-bold"> {city.avgAge} </span>
             </div>
           </div>
           
@@ -519,7 +522,7 @@ export default function CityPage() {
         <UnemploymentChart />
 
         {/* Empty space for layout balance */}
-        <div></div>
+        
 
         {/* Traffic accidents chart - replaced with improved version */}
         <TrafficAccidentsChart />
