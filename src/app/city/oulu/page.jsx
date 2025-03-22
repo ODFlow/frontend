@@ -453,11 +453,7 @@ export default function CityPage() {
           <h1 className="text-4xl font-bold mt-10 text-[#D5D5D5]">{city.name}</h1>
           
           <div className="my-8 relative">
-            <svg width="120" height="100" viewBox="0 0 120 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="40" y="10" width="40" height="60" fill="white" />
-              <rect x="10" y="40" width="40" height="40" fill="white" />
-            </svg>
-            <div className="absolute top-0 right-0 bg-gray-800 text-xs px-2 py-1 rounded m-2">City Map</div>
+            <ApartmentIcon sx = {{fontSize: '8em' }} />
           </div>
           
           <p className="text-center text-sm mb-4 text-[#D5D5D5]">
