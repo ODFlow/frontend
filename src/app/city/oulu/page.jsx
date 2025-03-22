@@ -6,6 +6,15 @@ import { Card } from "@/components/ui/card"
 import { PieChart } from '@mui/x-charts/PieChart';
 import { LineChart } from '@mui/x-charts/LineChart';
 import { useRef, useState, useEffect } from "react"
+import './page.css'
+import GroupsIcon from '@mui/icons-material/Groups';
+import StrollerIcon from '@mui/icons-material/Stroller';
+import ApartmentIcon from '@mui/icons-material/Apartment';
+import {alpha} from "@mui/system";
+import HomeIcon from '@mui/icons-material/Home';
+import LockIcon from '@mui/icons-material/Lock';
+import SearchIcon from '@mui/icons-material/Search';
+
 
 // City data (in a real app, this would come from an API)
 const cityData = {
