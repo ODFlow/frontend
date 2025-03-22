@@ -379,8 +379,16 @@ export default function CityPage() {
           <span className="text-2xl">🏠</span> 
           <span>Home</span>
         </Link>
-        <Link href="/privacy-policy" className="flex items-center gap-2 text-[#D5D5D5]">
-          <span className="text-2xl">🔒</span>
+        <Link href="/privacy-policy" underline="hover"
+              sx={{
+                color: '#D5D5D5',
+                '&:hover': {
+                  transform: 'scale(1.02)',
+                  transition: 'transform 0.2s ease-in-out',
+                },
+              }}
+              className="flex items-center gap-2 text-[#D5D5D5]">
+          <LockIcon/>
           <span>Privacy policy</span>
         </Link>
         <div className="ml-auto relative">
