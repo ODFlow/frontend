@@ -375,9 +375,19 @@ export default function CityPage() {
     <div className="min-h-screen bg-black text-[#D5D5D5]">
       {/* Header */}
       <header className="p-4 flex items-center gap-6 border-b border-gray-800 text-[#D5D5D5]">
-        <Link href="/" className="flex items-center gap-2 text-[#D5D5D5]">
-          <span className="text-2xl">🏠</span> 
-          <span>Home</span>
+        <Link href="/"
+              underline="hover"
+              sx={{
+                  color: '#D5D5D5',
+                  '&:hover': {
+                            transform: 'scale(1.02)',
+                            transition: 'transform 0.2s ease-in-out',
+                            },
+                  }}
+              className="flex items-center gap-2 text-[#D5D5D5]">
+          <HomeIcon />
+          Home
+
         </Link>
         <Link href="/privacy-policy" underline="hover"
               sx={{
