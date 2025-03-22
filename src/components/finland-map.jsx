@@ -1,125 +1,35 @@
 "use client"
 
 import { useState } from "react"
-import { MapContainer, TileLayer, GeoJSON, Marker, Popup } from "react-leaflet"
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet"
 import "leaflet/dist/leaflet.css"
 import L from "leaflet"
 import axios from "axios"
 import { useRouter } from "next/navigation"
+import HomeIcon from '@mui/icons-material/Home';
 
-// Fix for default marker icons in Leaflet with Next.js
-// We're using a workaround since we don't have the actual marker files
-const DefaultIcon = L.divIcon({
-  className: "custom-div-icon",
-  html: `<div style="background-color: white; width: 10px; height: 10px; border-radius: 50%; border: 2px solid #333;"></div>`,
-  iconSize: [15, 15],
+
+
+
+
+
+
+
+const DefaultIcon = new L.Icon({
+  iconUrl: "/default_marker.png",
+  iconSize: [20, 20],
   iconAnchor: [7, 7],
   popupAnchor: [0, -7],
 })
 
-L.Marker.prototype.options.icon = DefaultIcon
+const HoverIcon = new L.Icon({
+  iconUrl: "/hover_marker.png",
+  iconSize: [21, 21],
+  iconAnchor: [7, 7],
+  popupAnchor: [0, -7],
+})
 
-// Simplified Finland GeoJSON data embedded directly in the component
-const finlandGeoJSONData = {
-  type: "FeatureCollection",
-  features: [
-    {
-      type: "Feature",
-      properties: {
-        name: "Northern Finland",
-        id: "north",
-      },
-      geometry: {
-        type: "Polygon",
-        coordinates: [
-          [
-            [24, 66],
-            [28, 66],
-            [28, 70],
-            [24, 70],
-            [24, 66],
-          ],
-        ],
-      },
-    },
-    {
-      type: "Feature",
-      properties: {
-        name: "Central Finland",
-        id: "central",
-      },
-      geometry: {
-        type: "Polygon",
-        coordinates: [
-          [
-            [24, 63],
-            [28, 63],
-            [28, 66],
-            [24, 66],
-            [24, 63],
-          ],
-        ],
-      },
-    },
-    {
-      type: "Feature",
-      properties: {
-        name: "Southern Finland",
-        id: "south",
-      },
-      geometry: {
-        type: "Polygon",
-        coordinates: [
-          [
-            [24, 60],
-            [28, 60],
-            [28, 63],
-            [24, 63],
-            [24, 60],
-          ],
-        ],
-      },
-    },
-    {
-      type: "Feature",
-      properties: {
-        name: "Western Finland",
-        id: "west",
-      },
-      geometry: {
-        type: "Polygon",
-        coordinates: [
-          [
-            [21, 60],
-            [24, 60],
-            [24, 66],
-            [21, 66],
-            [21, 60],
-          ],
-        ],
-      },
-    },
-    {
-      type: "Feature",
-      properties: {
-        name: "Eastern Finland",
-        id: "east",
-      },
-      geometry: {
-        type: "Polygon",
-        coordinates: [
-          [
-            [28, 60],
-            [31, 60],
-            [31, 66],
-            [28, 66],
-            [28, 60],
-          ],
-        ],
-      },
-    },
-  ],
-}
+
 
 const cities = [
   { name: "Oulu", position: [65.0121, 25.4651], code: "KU564" },
@@ -201,48 +111,44 @@ export default function FinlandMap() {
     router.push(`/city/${city.name.toLowerCase()}`)
   }
 
-  const getColor = (feature) => {
-    // Assign different shades of purple based on region id
-    const regionColors = {
-      north: "#6a0dad", // dark purple
-      central: "#9370db", // medium purple
-      south: "#d8bfd8", // light purple
-      west: "#8a2be2", // blue violet
-      east: "#ba55d3", // medium orchid
+  const loadingContent = () => {
+    if (loading) {
+      return <p> Loading... </p>
     }
 
-    return regionColors[feature.properties.id] || "#9370db" // default to medium purple
+    if (populationData[selectedCity.code]) {
+      return (
+          <div>
+            <p>Population data loaded</p>
+            <pre className="text-xs overflow-x-auto">
+                  {JSON.stringify(populationData[selectedCity.code], null, 2)}
+                </pre>
+          </div>
+      )
+    }
+
+    return <p> No data </p>
   }
 
-  const style = (feature) => {
-    return {
-      //fillColor: getColor(feature),
-      fillColor: 'tranparent',
-      weight: 3,
-      opacity: 1,
-      color: 'ffffff',
-      fillOpacity: 0,
-      dashArray: '',
-      strokeOpacity: 1    }
-  }
+
 
   return (
     <div className="flex flex-col md:flex-row h-screen bg-black text-white">
       <div className="w-full md:w-2/3 h-[70vh] md:h-screen relative">
         <MapContainer
-          center={[64.5, 26]}
-          zoom={5}
+          center={[63.5, 24]}
+          zoom={6}
           style={{ height: "100%", width: "100%" }}
-          zoomControl={false}
+          zoomControl={true}
           attributionControl={false}
         >
           <TileLayer
             url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
           />
-          {cities.map((city, index) => (
+          {cities.map((city) => (
               <Marker
-                  key={index}
+                  key={city.code}
                   position={city.position}
                   icon={DefaultIcon} // Set initial icon
                   eventHandlers={{
@@ -258,9 +164,9 @@ export default function FinlandMap() {
               <Popup>
                 <div className="text-center">
                   <h3 className="font-bold">{city.name}</h3>
-                  <button 
-                    onClick={() => handleCityClick(city)} 
-                    className="mt-2 bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700"
+                  <button
+                    onClick={() => handleCityClick(city)}
+                    className="mt-2 bg-[#6254B5] text-white px-3 py-1 rounded hover:bg-[#4e4390]"
                   >
                     View Details
                   </button>
@@ -271,11 +177,13 @@ export default function FinlandMap() {
         </MapContainer>
       </div>
 
+
+      {/* Right panel with cities */}
       <div className="w-full md:w-1/3 p-4 space-y-4 overflow-y-auto">
-        {cities.map((city, index) => (
+        {cities.map((city) => (
           <button
-            key={index}
-            className="flex items-center w-full p-3 rounded-lg bg-gray-800 hover:bg-gray-700 transition-colors"
+            key={city.code}
+            className="flex items-center w-full p-3 rounded-lg bg-[#1E1E1E] hover:bg-[#343434] transition-colors"
             onClick={() => handleCityClick(city)}
           >
             <div className="mr-[3%]">
@@ -284,35 +192,21 @@ export default function FinlandMap() {
             <span>{city.name}</span>
           </button>
         ))}
-        <button className="flex items-center w-full p-3 rounded-lg bg-gray-800 hover:bg-gray-700 transition-colors">
-          <span className="mr-3">🏠</span>
-          <span>...</span>
-        </button>
+
 
         {selectedCity && (
           <div className="mt-8 p-4 bg-gray-800 rounded-lg">
             <h2 className="text-xl font-bold mb-4">{selectedCity.name}</h2>
-            {loading ? (
-              <p>Loading data...</p>
-            ) : populationData[selectedCity.code] ? (
-              <div>
-                <p>Population data loaded</p>
-                <pre className="text-xs overflow-x-auto">
-                  {JSON.stringify(populationData[selectedCity.code], null, 2)}
-                </pre>
-              </div>
-            ) : (
-              <p>No data available</p>
-            )}
+            {loadingContent()}
           </div>
         )}
       </div>
 
       <footer className="absolute bottom-0 left-0 right-0 p-4 flex justify-center space-x-8 bg-black bg-opacity-70">
-        <a href="#" className="hover:underline">
+        <a href="/" className="hover:underline">
           About
         </a>
-        <a href="#" className="hover:underline">
+        <a href="/" className="hover:underline">
           Privacy policy
         </a>
       </footer>
