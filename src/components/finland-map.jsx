@@ -278,7 +278,9 @@ export default function FinlandMap() {
             className="flex items-center w-full p-3 rounded-lg bg-gray-800 hover:bg-gray-700 transition-colors"
             onClick={() => handleCityClick(city)}
           >
-            <span className="mr-3">🏠</span>
+            <div className="mr-[3%]">
+             <HomeIcon sx = {{color: '#FFFFFF'}}/>
+            </div>
             <span>{city.name}</span>
           </button>
         ))}
