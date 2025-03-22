@@ -15,10 +15,10 @@ export default function Home() {
         </Link>
       </main>
       <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a href="#" className="text-sm text-gray-500 hover:text-gray-400">
+        <a href="//" className="text-sm text-gray-500 hover:text-gray-400">
           About
         </a>
-        <a href="#" className="text-sm text-gray-500 hover:text-gray-400">
+        <a href="//" className="text-sm text-gray-500 hover:text-gray-400">
           Privacy Policy
         </a>
       </footer>
