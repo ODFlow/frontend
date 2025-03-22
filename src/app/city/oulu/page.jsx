@@ -152,39 +152,8 @@ function UnemploymentChart() {
           width={chartDimensions.width}
           height={chartDimensions.height}
           margin={{ top: 20, bottom: 40, left: 40, right: 10 }}
-          sx={{
-            '.MuiLineElement-root': {
-              strokeWidth: 2,
-            },
-            '.MuiAreaElement-series-0': {
-              fill: 'url(#purpleGradient)',
-              opacity: 0.2,
-            },
-            '.MuiChartsAxis-tickLabel': {
-              fill: '#D5D5D5'
-            },
-            '.MuiChartsAxis-label': {
-              fill: '#D5D5D5'
-            },
-            '.MuiChartsLegend-label': {
-              fill: '#D5D5D5',
-              fontSize: '12px',
-              fontWeight: 500,
-            },
-            '.MuiChartsLegend-series-0 .MuiChartsLegend-label': {
-              fill: '#9b59b6',
-            },
-            '.MuiChartsLegend-series-1 .MuiChartsLegend-label': {
-              fill: '#D5D5D5',
-            },
-            '.MuiChartsLegend-root': {
-              display: 'flex',
-              justifyContent: 'center',
-              marginTop: '20px',
-            },
-            backgroundColor: 'transparent',
-          }}
-          tooltip={{ 
+
+          tooltip={{
             trigger: 'item',
           }}
           slotProps={{
