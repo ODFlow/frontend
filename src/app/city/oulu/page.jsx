@@ -1,9 +1,8 @@
 "use client"
-
+import Link from '@mui/material/Link';
 import { useParams } from "next/navigation"
-import Link from "next/link"
 import { Card } from "@/components/ui/card"
-import { PieChart } from '@mui/x-charts/PieChart';
+import {pieArcLabelClasses, PieChart} from '@mui/x-charts/PieChart';
 import { LineChart } from '@mui/x-charts/LineChart';
 import { useRef, useState, useEffect } from "react"
 import './page.css'
@@ -13,7 +12,6 @@ import ApartmentIcon from '@mui/icons-material/Apartment';
 import {alpha} from "@mui/system";
 import HomeIcon from '@mui/icons-material/Home';
 import LockIcon from '@mui/icons-material/Lock';
-import SearchIcon from '@mui/icons-material/Search';
 
 
 // City data (in a real app, this would come from an API)
@@ -58,6 +56,7 @@ const getSafetyColor = (rating) => {
   return '#9187cb';
 }
 
+
 // Unemployment data from 2015-2025
 const years = [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025];
 const unemploymentData = [8.4, 7.8, 6.9, 5.7, 5.2, 9.1, 8.3, 7.6, 6.8, 6.4, 6.1];
@@ -73,11 +72,7 @@ function UnemploymentChart() {
   // National average data for comparison
   const nationalAvgData = [7.4, 6.6, 6.1, 9.5, 8.9, 8.1, 7.5, 7.2, 6.9];
 
-  // Crime data for the same period
-  const crimeData = [1510, 1420, 1320, 1680, 1790, 1550, 1380, 1210, 1150];
 
-  // Current year index (2023)
-  const currentYearIndex = 6;
 
   // Use a ref to measure container and resize chart accordingly
   const chartContainerRef = useRef(null);
@@ -102,24 +97,22 @@ function UnemploymentChart() {
   }, []);
 
   return (
-    <Card className="bg-gray-900 p-6 rounded-lg text-[#D5D5D5] flex flex-col h-full">
+    <Card className="bg-[var(--card-background)] p-6 rounded-lg text-[#D5D5D5] flex flex-col h-full">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold text-[#D5D5D5]">Unemployment</h2>
         <span className="text-sm bg-gray-800 px-2 py-1 rounded">Updated: March 2024</span>
       </div>
-      
+
       <div className="h-64 w-full relative" ref={chartContainerRef}>
         <LineChart
-          xAxis={[{ 
+          xAxis={[{
             data: years,
             tickLabelStyle: {
               fill: '#D5D5D5',
               fontSize: 10,
             },
-            labelStyle: {
-              fill: '#D5D5D5',
-            },
             scaleType: 'band',
+
           }]}
           yAxis={[{
             min: 1,  // Starting from 1% as requested
@@ -127,23 +120,33 @@ function UnemploymentChart() {
             tickLabelStyle: {
               fill: '#D5D5D5',
               fontSize: 10,
-            }
+            },
           }]}
           series={[
             {
+              id: 'unemploymentData',
               data: unemploymentData,
               label: 'Oulu',
+              curve: 'natural',
               color: '#6254B5',
-              curve: 'linear',
               showMark: true,
+
+
+              fill: alpha('#6254B5', 0.5),
               area: true,
               valueFormatter: (value) => `${value}%`,
+
+
             },
             {
+              id: 'nationalAvgData',
               data: nationalAvgData,
               label: 'National Avg',
-              color: '#D5D5D5',
-              curve: 'linear',
+              color: '#a098d2',
+              area: true,
+              curve: 'natural',
+
+
               showMark: false,
               lineStyle: { strokeDasharray: '5 5' },
               valueFormatter: (value) => `${value}%`,
@@ -157,16 +160,30 @@ function UnemploymentChart() {
             trigger: 'item',
           }}
           slotProps={{
-            legend: { 
+            legend: {
               hidden: false,
               position: { vertical: 'bottom', horizontal: 'middle' },
               padding: 0,
               itemMarkWidth: 8,
               itemMarkHeight: 8,
-              markGap: 5,
+              markGap: 10,
               itemGap: 10,
+              labelStyle: {
+                fill: '#D5D5D5',
+              },
+
+
             }
           }}
+
+          sx={{
+                "& .MuiAreaElement-series-unemploymentData": {
+                  fill: alpha('#6254B5', 0.5),
+                },
+                "& .MuiAreaElement-series-nationalAvgData": {
+                  fill: alpha('#8176c3', 0.2),
+                }
+              }}
         >
 
 
@@ -176,25 +193,28 @@ function UnemploymentChart() {
             <text x="0" y="0" fill="#F44336" fontSize="10">
               COVID-19
             </text>
-            <line 
-              x1="0" 
-              y1="5" 
-              x2="0" 
+            <line
+              x1="0"
+              y1="5"
+              x2="0"
               y2="50"
               stroke="#F44336"
               strokeWidth="1"
               strokeDasharray="2 2"
             />
           </g>
-          
-          {/* Mark for current year */}
+          */}
+          {/* Mark for current year
           <g transform={`translate(${40 + (chartDimensions.width - 50) * (6/8)}, 15)`}>
             <text x="0" y="0" fill="#4CAF50" fontSize="10">
               Current
             </text>
           </g>
+          */}
         </LineChart>
       </div>
+
+
       
       <div className="flex justify-center mt-4">
         <button 
@@ -235,12 +255,12 @@ function TrafficAccidentsChart() {
   }, []);
 
   return (
-    <Card className="bg-gray-900 p-6 rounded-lg text-[#D5D5D5] flex flex-col h-full">
+    <Card className="bg-[var(--card-background)] p-6 rounded-lg text-[#D5D5D5] flex flex-col h-full">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold text-[#D5D5D5]">Traffic accidents</h2>
         <span className="text-sm bg-gray-800 px-2 py-1 rounded">2023</span>
       </div>
-      
+
       <div className="h-56 w-full relative" ref={chartContainerRef}>
         <PieChart
           series={[
@@ -257,6 +277,9 @@ function TrafficAccidentsChart() {
               arcLabelMinAngle: 20,
               cx: chartDimensions.width / 2,
               cy: 100,
+
+
+
             }
           ]}
           width={chartDimensions.width}
@@ -270,27 +293,20 @@ function TrafficAccidentsChart() {
               itemMarkWidth: 8,
               itemMarkHeight: 8,
               markGap: 5,
-              itemGap: 10,
+              itemGap: 15,
+              labelStyle: {
+                fill: '#FFFFFF',
+              },
+
+
             }
           }}
           sx={{
-            '.MuiChartsLegend-label': {
-              fill: '#D5D5D5',
-              fontSize: '10px',
+            [`& .${pieArcLabelClasses.root}`]: {
+              fill: 'white',
             },
-            '.MuiChartsLegend-root': {
-              display: 'flex',
-              justifyContent: 'center',
-            },
-            '.MuiChartsLegend-item': {
-              flexDirection: 'row',
-              alignItems: 'center',
-            },
-            '.MuiChartsPieArcLabel-root': {
-              fill: '#fff',
-              fontSize: '10px',
-              fontWeight: 'bold',
-            },
+
+
           }}
         />
       </div>
@@ -346,7 +362,7 @@ export default function CityPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-black text-[#D5D5D5]">
+    <div className="min-h-screen bg-[var(--page-background)] text-[#D5D5D5]">
       {/* Header */}
       <header className="p-4 flex items-center gap-6 border-b border-gray-800 text-[#D5D5D5]">
         <Link href="/"
@@ -379,7 +395,7 @@ export default function CityPage() {
           <input 
             type="search" 
             placeholder="Search" 
-            className="bg-gray-900 text-[#D5D5D5] px-4 py-2 rounded-md pl-10 w-64"
+            className="bg-[var(--card-background)] text-[#D5D5D5] px-4 py-2 rounded-md pl-10 w-64"
           />
           <span className="absolute left-3 top-2.5">🔍</span>
         </div>
@@ -389,7 +405,7 @@ export default function CityPage() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-6">
         
         
-        <Card className="bg-gray-900 p-6 rounded-lg text-[#D5D5D5] flex flex-col h-full">
+        <Card className="bg-[var(--card-background)] p-6 rounded-lg text-[#D5D5D5] flex flex-col h-full">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-2xl font-bold text-[#D5D5D5]">Safety rating</h2>
             <span className="text-sm bg-gray-800 px-2 py-1 rounded">{city.lastUpdated}</span>
@@ -411,27 +427,31 @@ export default function CityPage() {
                   cy: 100,
                   highlightScope: { faded: 'global', highlighted: 'item' },
                   faded: { innerRadius: 60, additionalRadius: -2, color: 'gray' },
+
                 }
               ]}
+
               width={200}
               height={200}
+
               slotProps={{
-                legend: { hidden: true }
+                legend: { hidden: true },
+
               }}
               sx={{
                 filter: 'drop-shadow(0px 4px 6px rgba(106, 13, 173, 0.3))'
               }}
             />
-            
+
             {/* Overlay the percentage text */}
             <div className="absolute flex flex-col items-center" style={{ textAlign: 'center' }}>
               <span className="text-3xl font-bold text-[#D5D5D5]"> {safetyRatingValue}% </span>
-              <span className="text-sm mt-1 text-green-400"> {city.yearOverYearChange} </span>
+              {/*<span className="text-sm mt-1 text-green-400"> {city.yearOverYearChange} </span>*/}
             </div>
           </div>
           
           <div className="flex justify-center mt-4">
-            <button 
+            <button
               className="bg-[#D5D5D5] w-14 h-14 rounded-md flex items-center justify-center"
               aria-label="More information about safety rating"
             >
@@ -441,7 +461,7 @@ export default function CityPage() {
         </Card>
 
 
-        <Card className="bg-gray-900 p-6 rounded-lg flex flex-col items-center justify-between text-[#D5D5D5] md:row-span-2">
+        <Card className="bg-[var(--card-background)] p-6 rounded-lg flex flex-col items-center justify-between text-[#D5D5D5] md:row-span-2">
           <h1 className="text-4xl font-bold mt-10 text-[#D5D5D5]">{city.name}</h1>
           
           <div className="my-8 relative">
@@ -461,7 +481,7 @@ export default function CityPage() {
 
 
         {/* Population card */}
-        <Card className="bg-gray-900 p-6 rounded-lg text-[#D5D5D5] flex flex-col h-full">
+        <Card className="bg-[var(--card-background)] p-6 rounded-lg text-[#D5D5D5] flex flex-col h-full">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-2xl font-bold text-[#D5D5D5]">Population</h2>
           </div>
@@ -469,30 +489,19 @@ export default function CityPage() {
 
           <div className="flex items-center mb-16 px-4">
             <div className="flex-shrink-0 w-16 flex justify-center">
-              <svg width="50" height="40" viewBox="0 0 50 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="25" cy="12" r="8" fill="#D5D5D5" />
-                <circle cx="10" cy="12" r="6" fill="#D5D5D5" />
-                <circle cx="40" cy="12" r="6" fill="#D5D5D5" />
-                <path d="M25 22C18.3726 22 13 27.3726 13 34H37C37 27.3726 31.6274 22 25 22Z" fill="#D5D5D5" />
-                <path d="M10 22C5.58172 22 2 25.5817 2 30H18C18 25.5817 14.4183 22 10 22Z" fill="#D5D5D5" />
-                <path d="M40 22C35.5817 22 32 25.5817 32 30H48C48 25.5817 44.4183 22 40 22Z" fill="#D5D5D5" />
-              </svg>
+              <GroupsIcon sx = {{fontSize: '3em'}}/>
             </div>
             <div className="flex-grow flex justify-center">
-              <div className="text-4xl font-bold"> {city.population} </div>
+              <span style = {{fontSize: '2em', fontWeight: 'bold'}}> {city.population} </span>
             </div>
           </div>
           
           <div className="flex items-center mb-16 px-4">
             <div className="flex-shrink-0 w-16 flex justify-center">
-              <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="20" cy="10" r="8" fill="#D5D5D5" />
-                <path d="M28 32L20 15L12 32" stroke="#D5D5D5" strokeWidth="4" />
-                <path d="M14 25H26" stroke="#D5D5D5" strokeWidth="4" />
-              </svg>
+              <StrollerIcon sx = {{fontSize: '3em'}}/>
             </div>
             <div className="flex-grow flex justify-center">
-              <span className="text-4xl font-bold"> {city.avgAge} </span>
+              <span style = {{fontSize: '2em', fontWeight: 'bold'}}> {city.avgAge} </span>
             </div>
           </div>
           
@@ -506,14 +515,9 @@ export default function CityPage() {
           </div>
         </Card>
 
-        {/* Unemployment chart */}
         <UnemploymentChart />
-
-        {/* Empty space for layout balance */}
-        
-
-        {/* Traffic accidents chart - replaced with improved version */}
         <TrafficAccidentsChart />
+
       </div>
       
       {/* Footer with data source information */}
