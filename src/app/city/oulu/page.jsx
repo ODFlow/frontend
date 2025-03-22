@@ -199,14 +199,10 @@ function UnemploymentChart() {
             }
           }}
         >
-          <defs>
-            <linearGradient id="purpleGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#9b59b6" stopOpacity={0.8}/>
-              <stop offset="100%" stopColor="#9b59b6" stopOpacity={0}/>
-            </linearGradient>
-          </defs>
-          
-          {/* Annotation for COVID-19 impact */}
+
+
+          {/* Annotation for COVID-19 impact
+
           <g transform={`translate(${40 + (chartDimensions.width - 50) * (3/8)}, 40)`}>
             <text x="0" y="0" fill="#F44336" fontSize="10">
               COVID-19
