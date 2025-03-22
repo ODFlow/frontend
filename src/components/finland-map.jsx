@@ -241,13 +241,20 @@ export default function FinlandMap() {
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
           />
           {cities.map((city, index) => (
-            <Marker
-              key={index}
-              position={city.position}
-              eventHandlers={{
-                click: () => handleCityClick(city),
-              }}
-            >
+              <Marker
+                  key={index}
+                  position={city.position}
+                  icon={DefaultIcon} // Set initial icon
+                  eventHandlers={{
+                    mouseover: (e) => {
+                      e.target.setIcon(HoverIcon)
+
+                    },
+                    mouseout: (e) => {
+                      e.target.setIcon(DefaultIcon)
+                    },
+                  }}
+              >
               <Popup>
                 <div className="text-center">
                   <h3 className="font-bold">{city.name}</h3>
