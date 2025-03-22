@@ -43,10 +43,10 @@ const cityData = {
 
 // Safety rating colors based on value ranges
 const getSafetyColor = (rating) => {
-  if (rating >= 80) return '#6254b5'; // Green for very safe
-  if (rating >= 60) return '#7165bc'; // Purple for moderately safe
-  if (rating >= 40) return '#8176c3'; // Orange for caution
-  return '#9187cb'; // Red for unsafe
+  if (rating >= 80) return '#6254b5';
+  if (rating >= 60) return '#7165bc';
+  if (rating >= 40) return '#8176c3';
+  return '#9187cb';
 }
 
 // Unemployment data from 2015-2025
