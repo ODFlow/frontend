@@ -1,5 +1,9 @@
+"use client"
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { ThemeProvider } from '@mui/material/styles';
+import theme from "./theme";
+import {CssBaseline} from "@mui/material";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -11,18 +15,19 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata = {
-  title: "Frontend",
-};
+
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
-      </body>
-    </html>
+      <html lang="en">
+        <body>
+
+
+      <ThemeProvider theme={theme}>
+          <CssBaseline />
+          {children}
+      </ThemeProvider>
+        </body>
+      </html>
   );
 }
