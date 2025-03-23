@@ -1,10 +1,11 @@
 "use client"
-import Link from '@mui/material/Link';
+import Link from 'next/link'
 import { useParams } from "next/navigation"
+import { useTheme } from '@mui/material/styles';
 import { Card } from "@/components/ui/card"
 import {pieArcLabelClasses, PieChart} from '@mui/x-charts/PieChart';
 import { LineChart } from '@mui/x-charts/LineChart';
-import { useRef, useState, useEffect } from "react"
+import {useRef, useState, useEffect, useContext} from "react"
 import './page.css'
 import GroupsIcon from '@mui/icons-material/Groups';
 import StrollerIcon from '@mui/icons-material/Stroller';
@@ -12,6 +13,8 @@ import ApartmentIcon from '@mui/icons-material/Apartment';
 import {alpha} from "@mui/system";
 import HomeIcon from '@mui/icons-material/Home';
 import LockIcon from '@mui/icons-material/Lock';
+
+
 
 
 // City data (in a real app, this would come from an API)
@@ -48,13 +51,6 @@ const cityData = {
   }
 }
 
-// Safety rating colors based on value ranges
-const getSafetyColor = (rating) => {
-  if (rating >= 80) return '#6254b5';
-  if (rating >= 60) return '#7165bc';
-  if (rating >= 40) return '#8176c3';
-  return '#9187cb';
-}
 
 
 // Unemployment data from 2015-2025
@@ -333,6 +329,18 @@ function TrafficAccidentsChart() {
 }
 
 export default function CityPage() {
+    const theme = useTheme();
+
+    const getSafetyColor = (rating, theme) => {
+
+    if (rating >= 80) return theme.palette.customValues.safetyRatingColors.excellent;
+    if (rating >= 60) return theme.palette.customValues.safetyRatingColors.good;
+    if (rating >= 40) return theme.palette.customValues.safetyRatingColors.average;
+    return theme.palette.customValues.safetyRatingColors.poor;
+  }
+
+
+
   const params = useParams();
   const cityNameParam = params?.cityName || '';
   
@@ -353,7 +361,7 @@ export default function CityPage() {
 
   // Extract the safety rating as a number (removing % sign if present)
   const safetyRatingValue = parseInt(city.safetyRating, 10) || 72;
-  const safetyColor = getSafetyColor(safetyRatingValue);
+  const safetyColor = getSafetyColor(safetyRatingValue, theme);
   
   // Prepare data for the PieChart
   const safetyData = [
@@ -366,14 +374,6 @@ export default function CityPage() {
       {/* Header */}
       <header className="p-4 flex items-center gap-6 border-b border-gray-800 text-[#D5D5D5]">
         <Link href="/"
-              underline="hover"
-              sx={{
-                  color: '#D5D5D5',
-                  '&:hover': {
-                            transform: 'scale(1.02)',
-                            transition: 'transform 0.2s ease-in-out',
-                            },
-                  }}
               className="flex items-center gap-2 text-[#D5D5D5]">
           <HomeIcon />
           Home
@@ -405,7 +405,10 @@ export default function CityPage() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-6">
         
         
-        <Card className="bg-[var(--card-background)] p-6 rounded-lg text-[#D5D5D5] flex flex-col h-full">
+        <Card className="p-6 rounded-lg text-[#D5D5D5] flex flex-col h-full"
+        style={{
+          background: theme.palette.background.paper,
+        }}>
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-2xl font-bold text-[#D5D5D5]">Safety rating</h2>
             <span className="text-sm bg-gray-800 px-2 py-1 rounded">{city.lastUpdated}</span>
@@ -461,7 +464,7 @@ export default function CityPage() {
         </Card>
 
 
-        <Card className="bg-[var(--card-background)] p-6 rounded-lg flex flex-col items-center justify-between text-[#D5D5D5] md:row-span-2">
+        <Card style={{background: theme.palette.background.paper}} className="p-6 rounded-lg flex flex-col items-center justify-between text-[#D5D5D5] md:row-span-2">
           <h1 className="text-4xl font-bold mt-10 text-[#D5D5D5]">{city.name}</h1>
           
           <div className="my-8 relative">
@@ -481,7 +484,7 @@ export default function CityPage() {
 
 
         {/* Population card */}
-        <Card className="bg-[var(--card-background)] p-6 rounded-lg text-[#D5D5D5] flex flex-col h-full">
+        <Card style={{background: theme.palette.background.paper}} className="p-6 rounded-lg text-[#D5D5D5] flex flex-col h-full">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-2xl font-bold text-[#D5D5D5]">Population</h2>
           </div>
