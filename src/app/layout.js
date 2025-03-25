@@ -4,6 +4,8 @@ import "./globals.css";
 import { ThemeProvider } from '@mui/material/styles';
 import theme from "./theme";
 import {CssBaseline} from "@mui/material";
+import { ApolloProvider } from '@apollo/client';
+import client from '../../lib/apollo-client';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,19 +17,17 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-
-
 export default function RootLayout({ children }) {
   return (
-      <html lang="en">
-        <body>
-
-
-      <ThemeProvider theme={theme}>
-          <CssBaseline />
-          {children}
-      </ThemeProvider>
-        </body>
-      </html>
+    <html lang="en">
+      <body>
+        <ApolloProvider client={client}>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            {children}
+          </ThemeProvider>
+        </ApolloProvider>
+      </body>
+    </html>
   );
 }
