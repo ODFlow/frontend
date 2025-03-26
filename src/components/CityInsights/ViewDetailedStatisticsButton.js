@@ -4,7 +4,8 @@ import Link from 'next/link';
 import { Box, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
-const StyledLink = styled(Link)(({ theme }) => ({
+// Create a styled Typography component instead of trying to style Link directly
+const StyledLinkText = styled(Typography)(({ theme }) => ({
   color: '#6D28D9',
   textDecoration: 'none',
   display: 'flex',
@@ -26,11 +27,11 @@ export default function ViewDetailedStatisticsButton({ href = "/population", tex
       mt: 2, 
       mb: 2 
     }}>
-      <StyledLink href={href}>
-        <Typography variant="body1">
-          {text} ➔
-        </Typography>
-      </StyledLink>
+      <Link href={href} passHref>
+        <StyledLinkText component="a">
+          {text} <span>➔</span>
+        </StyledLinkText>
+      </Link>
     </Box>
   );
 } 
