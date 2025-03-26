@@ -1,11 +1,11 @@
 "use client";
 
 import Link from 'next/link';
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
-// Create a styled Typography component instead of trying to style Link directly
-const StyledLinkText = styled(Typography)(({ theme }) => ({
+// Create a styled Link component directly
+const StyledLink = styled(Link)(({ theme }) => ({
   color: '#6D28D9',
   textDecoration: 'none',
   display: 'flex',
@@ -27,11 +27,9 @@ export default function ViewDetailedStatisticsButton({ href = "/population", tex
       mt: 2, 
       mb: 2 
     }}>
-      <Link href={href} passHref>
-        <StyledLinkText component="a">
-          {text} <span>➔</span>
-        </StyledLinkText>
-      </Link>
+      <StyledLink href={href}>
+        {text} <span>➔</span>
+      </StyledLink>
     </Box>
   );
 } 
