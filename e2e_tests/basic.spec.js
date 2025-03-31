@@ -38,7 +38,7 @@ test.describe('City card buttons', () => {
     await expect(tampereButton).toBeEnabled();
 
     await tampereButton.click();
-    await page.waitForURL('http://localhost:3000/city/tampere');
+    await page.waitForURL('http://localhost:3000/tampere');
 
   })
 
@@ -51,7 +51,7 @@ test.describe('City card buttons', () => {
     await expect(ouluButton).toBeEnabled();
 
     await ouluButton.click();
-    await page.waitForURL('http://localhost:3000/city/oulu');
+    await page.waitForURL('http://localhost:3000/oulu');
   })
 
   test('Stockholm button should not be on page', async ({page}) => {
@@ -70,13 +70,13 @@ test.describe('City card buttons', () => {
 test.describe('General view tests', () => {
   test('There should be 6 cards on a page', async ({page}) => {
 
-    await page.goto('localhost:3000/city/oulu');
-    const divs = page.locator('div[class*="p-6 rounded-lg"]');
+    await page.goto('localhost:3000/oulu');
+    const divs = page.getByTestId('data-card');
     await expect(divs).toHaveCount(5)
   })
 
   test('There should be 2 navigation buttons on a page', async ({page}) => {
-    await page.goto('localhost:3000/city/oulu');
+    await page.goto('localhost:3000/oulu');
     const btns = page.locator('a[class*="flex items-center gap-2 text-[#D5D5D5]"]');
 
     await expect(btns).toHaveCount(2);
