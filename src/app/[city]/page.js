@@ -6,7 +6,7 @@ import { Card } from "@/components/ui/card"
 import {pieArcLabelClasses, PieChart} from '@mui/x-charts/PieChart';
 import { LineChart } from '@mui/x-charts/LineChart';
 import {useRef, useState, useEffect, useContext} from "react"
-import './page.css'
+import '../page.css'
 import GroupsIcon from '@mui/icons-material/Groups';
 import StrollerIcon from '@mui/icons-material/Stroller';
 import ApartmentIcon from '@mui/icons-material/Apartment';
@@ -344,7 +344,7 @@ export default function CityPage() {
   const params = useParams();
   const cityNameParam = params?.cityName || '';
   
-  // Safely access the cityName and convert to lowercase
+  // Safely access the [cityName] and convert to lowercase
   const cityKey = typeof cityNameParam === 'string' ? cityNameParam.toLowerCase() : '';
   
   // Get city data or use default values
@@ -373,7 +373,7 @@ export default function CityPage() {
     <div className="min-h-screen bg-[var(--page-background)] text-[#D5D5D5]">
       {/* Header */}
       <header className="p-4 flex items-center gap-6 border-b border-gray-800 text-[#D5D5D5]">
-        <Link href="/"
+        <Link href="/public"
               className="flex items-center gap-2 text-[#D5D5D5]">
           <HomeIcon />
           Home
