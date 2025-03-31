@@ -7,15 +7,7 @@ import {CssBaseline} from "@mui/material";
 import { ApolloProvider } from '@apollo/client';
 import client from '../../lib/apollo-client';
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export default function RootLayout({ children }) {
   return (
