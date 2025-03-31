@@ -14,10 +14,10 @@ import {alpha} from "@mui/system";
 import HomeIcon from '@mui/icons-material/Home';
 import LockIcon from '@mui/icons-material/Lock';
 
+import { useQuery } from "@apollo/client";
+import { useEducation, useIncome, useDemographics, useUnemploymentRate } from "../../../lib/hooks/useCityData"
 
 
-
-// City data (in a real app, this would come from an API)
 const cityData = {
   oulu: {
     name: "Oulu",
@@ -53,24 +53,10 @@ const cityData = {
 
 
 
-// Unemployment data from 2015-2025
-const years = [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025];
-const unemploymentData = [8.4, 7.8, 6.9, 5.7, 5.2, 9.1, 8.3, 7.6, 6.8, 6.4, 6.1];
-
-// Crime data for the same period (hovering between 1000-2000 cases)
-const crimeData = [1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000,];
-
 function UnemploymentChart() {
-  // Updated to show 2017-2025 as requested
   const years = [2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025];
   const unemploymentData = [6.9, 5.7, 5.2, 9.1, 8.3, 7.6, 6.8, 6.4, 6.1];
-  
-  // National average data for comparison
   const nationalAvgData = [7.4, 6.6, 6.1, 9.5, 8.9, 8.1, 7.5, 7.2, 6.9];
-
-
-
-  // Use a ref to measure container and resize chart accordingly
   const chartContainerRef = useRef(null);
   const [chartDimensions, setChartDimensions] = useState({ width: 300, height: 220 });
   
@@ -93,10 +79,10 @@ function UnemploymentChart() {
   }, []);
 
   return (
-    <Card  className="bg-[var(--card-background)] p-6 rounded-lg text-[#D5D5D5] flex flex-col h-full">
+    <Card data-testid="data-card"  className="bg-[var(--card-background)] p-6 rounded-lg text-[#D5D5D5] flex flex-col h-full">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold text-[#D5D5D5]">Unemployment</h2>
-        <span className="text-sm bg-gray-800 px-2 py-1 rounded">Updated: March 2024</span>
+        <span className="text-sm px-2 py-1 rounded">Updated: March 2024</span>
       </div>
 
       <div className="h-64 w-full relative" ref={chartContainerRef}>
@@ -122,7 +108,7 @@ function UnemploymentChart() {
             {
               id: 'unemploymentData',
               data: unemploymentData,
-              label: 'Oulu',
+              label: 'City',
               curve: 'natural',
               color: '#6254B5',
               showMark: true,
@@ -182,31 +168,6 @@ function UnemploymentChart() {
               }}
         >
 
-
-          {/* Annotation for COVID-19 impact
-
-          <g transform={`translate(${40 + (chartDimensions.width - 50) * (3/8)}, 40)`}>
-            <text x="0" y="0" fill="#F44336" fontSize="10">
-              COVID-19
-            </text>
-            <line
-              x1="0"
-              y1="5"
-              x2="0"
-              y2="50"
-              stroke="#F44336"
-              strokeWidth="1"
-              strokeDasharray="2 2"
-            />
-          </g>
-          */}
-          {/* Mark for current year
-          <g transform={`translate(${40 + (chartDimensions.width - 50) * (6/8)}, 15)`}>
-            <text x="0" y="0" fill="#4CAF50" fontSize="10">
-              Current
-            </text>
-          </g>
-          */}
         </LineChart>
       </div>
 
@@ -251,10 +212,10 @@ function TrafficAccidentsChart() {
   }, []);
 
   return (
-    <Card className="bg-[var(--card-background)] p-6 rounded-lg text-[#D5D5D5] flex flex-col h-full">
+    <Card data-testid="data-card" className="bg-[var(--card-background)] p-6 rounded-lg text-[#D5D5D5] flex flex-col h-full">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold text-[#D5D5D5]">Traffic accidents</h2>
-        <span className="text-sm bg-gray-800 px-2 py-1 rounded">2023</span>
+
       </div>
 
       <div className="h-56 w-full relative" ref={chartContainerRef}>
@@ -341,10 +302,12 @@ export default function CityPage() {
 
 
 
+
+
   const params = useParams();
-  const cityNameParam = params?.cityName || '';
+  const cityNameParam = params?.city || '';
   
-  // Safely access the [cityName] and convert to lowercase
+
   const cityKey = typeof cityNameParam === 'string' ? cityNameParam.toLowerCase() : '';
   
   // Get city data or use default values
@@ -373,7 +336,7 @@ export default function CityPage() {
     <div className="min-h-screen bg-[var(--page-background)] text-[#D5D5D5]">
       {/* Header */}
       <header className="p-4 flex items-center gap-6 border-b border-gray-800 text-[#D5D5D5]">
-        <Link href="/public"
+        <Link href="/"
               className="flex items-center gap-2 text-[#D5D5D5]">
           <HomeIcon />
           Home
@@ -405,13 +368,13 @@ export default function CityPage() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-6">
         
         
-        <Card className="p-6 rounded-lg text-[#D5D5D5] flex flex-col h-full"
+        <Card data-testid="data-card" className="p-6 rounded-lg text-[#D5D5D5] flex flex-col h-full"
         style={{
           background: theme.palette.background.paper,
         }}>
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-2xl font-bold text-[#D5D5D5]">Safety rating</h2>
-            <span className="text-sm bg-gray-800 px-2 py-1 rounded">{city.lastUpdated}</span>
+            <span className="text-sm px-2 py-1 rounded">{city.lastUpdated}</span>
           </div>
           <p className="text-sm opacity-70 mb-6">National average: {city.nationalAvgSafety}</p>
           
@@ -420,8 +383,8 @@ export default function CityPage() {
               series={[
                 {
                   data: safetyData,
-                  innerRadius: 60,
-                  outerRadius: 80,
+                  innerRadius: 80,
+                  outerRadius: 100,
                   paddingAngle: 0,
                   cornerRadius: 4,
                   startAngle: -90,
@@ -429,8 +392,7 @@ export default function CityPage() {
                   cx: 100,
                   cy: 100,
                   highlightScope: { faded: 'global', highlighted: 'item' },
-                  faded: { innerRadius: 60, additionalRadius: -2, color: 'gray' },
-
+                  faded: { innerRadius: 80, additionalRadius: -2, color: 'gray' },
                 }
               ]}
 
@@ -464,7 +426,7 @@ export default function CityPage() {
         </Card>
 
 
-        <Card style={{background: theme.palette.background.paper}} className="p-6 rounded-lg flex flex-col items-center justify-between text-[#D5D5D5] md:row-span-2">
+        <Card data-testid="data-card" style={{background: theme.palette.background.paper}} className="p-6 rounded-lg flex flex-col items-center justify-between text-[#D5D5D5] md:row-span-2">
           <h1 className="text-4xl font-bold mt-10 text-[#D5D5D5]">{city.name}</h1>
           
           <div className="my-8 relative">
@@ -484,7 +446,7 @@ export default function CityPage() {
 
 
         {/* Population card */}
-        <Card style={{background: theme.palette.background.paper}} className="p-6 rounded-lg text-[#D5D5D5] flex flex-col h-full">
+        <Card data-testid="data-card" style={{background: theme.palette.background.paper}} className="p-6 rounded-lg text-[#D5D5D5] flex flex-col h-full">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-2xl font-bold text-[#D5D5D5]">Population</h2>
           </div>
