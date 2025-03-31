@@ -93,7 +93,7 @@ function UnemploymentChart() {
   }, []);
 
   return (
-    <Card className="bg-[var(--card-background)] p-6 rounded-lg text-[#D5D5D5] flex flex-col h-full">
+    <Card  className="bg-[var(--card-background)] p-6 rounded-lg text-[#D5D5D5] flex flex-col h-full">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold text-[#D5D5D5]">Unemployment</h2>
         <span className="text-sm bg-gray-800 px-2 py-1 rounded">Updated: March 2024</span>
