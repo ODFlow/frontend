@@ -77,9 +77,9 @@ test.describe('General view tests', () => {
 
   test('There should be 2 navigation buttons on a page', async ({page}) => {
     await page.goto('localhost:3000/oulu');
-    const btns = page.locator('a[class*="flex items-center gap-2 text-[#D5D5D5]"]');
+    const nav_buttons = page.getByTestId('navigation-button');
 
-    await expect(btns).toHaveCount(2);
+    await expect(nav_buttons).toHaveCount(2);
   })
 
 })

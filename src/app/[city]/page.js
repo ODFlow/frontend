@@ -337,12 +337,14 @@ export default function CityPage() {
       {/* Header */}
       <header className="p-4 flex items-center gap-6 border-b border-gray-800 text-[#D5D5D5]">
         <Link href="/"
+              data-testid="navigation-button"
               className="flex items-center gap-2 text-[#D5D5D5]">
           <HomeIcon />
           Home
 
         </Link>
         <Link href="/privacy-policy" underline="hover"
+              data-testid="navigation-button"
               sx={{
                 color: '#D5D5D5',
                 '&:hover': {
