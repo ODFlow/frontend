@@ -7,12 +7,8 @@ import L from "leaflet"
 import axios from "axios"
 import { useRouter } from "next/navigation"
 import HomeIcon from '@mui/icons-material/Home';
-
-
-
-
-
-
+import Link from 'next/link'
+import {useTheme} from "@mui/material/styles";
 
 
 const DefaultIcon = new L.Icon({
@@ -37,7 +33,10 @@ const cities = [
   { name: "Tampere", position: [61.4978, 23.761], code: "KU837" },
 ]
 
+
+
 export default function FinlandMap() {
+  const theme = useTheme();
   const router = useRouter()
   const [selectedCity, setSelectedCity] = useState(null)
   const [populationData, setPopulationData] = useState({})
@@ -108,7 +107,7 @@ export default function FinlandMap() {
     if (!populationData[city.code]) {
       fetchCityData(city.code)
     }
-    router.push(`/city/${city.name.toLowerCase()}`)
+    router.push(`${city.name.toLowerCase()}`)
   }
 
   const loadingContent = () => {
@@ -133,7 +132,8 @@ export default function FinlandMap() {
 
 
   return (
-    <div className="flex flex-col md:flex-row h-screen bg-black text-white">
+    <div style = {{backgroundColor: theme.palette.background.default}}
+        className="flex flex-col md:flex-row h-screen text-white">
       <div className="w-full md:w-2/3 h-[70vh] md:h-screen relative">
         <MapContainer
           center={[63.5, 24]}
@@ -195,7 +195,7 @@ export default function FinlandMap() {
 
 
         {selectedCity && (
-          <div className="mt-8 p-4 bg-gray-800 rounded-lg">
+          <div className="mt-8 p-4 bg-[#1E1E1E] rounded-lg">
             <h2 className="text-xl font-bold mb-4">{selectedCity.name}</h2>
             {loadingContent()}
           </div>
@@ -203,12 +203,12 @@ export default function FinlandMap() {
       </div>
 
       <footer className="absolute bottom-0 left-0 right-0 p-4 flex justify-center space-x-8 bg-black bg-opacity-70">
-        <a href="/" className="hover:underline">
+        <Link href="/" className="hover:underline">
           About
-        </a>
-        <a href="/" className="hover:underline">
+        </Link>
+        <Link href="/" className="hover:underline">
           Privacy policy
-        </a>
+        </Link>
       </footer>
     </div>
   )

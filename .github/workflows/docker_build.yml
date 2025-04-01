@@ -2,7 +2,7 @@ name: Build docker image
 
 on:
     workflow_run:
-        workflows: ["Basic build"]
+        workflows: ["Basic build", "E2E tests"]
         types:
             - completed
         branches:
