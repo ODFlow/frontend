@@ -317,14 +317,12 @@ function TrafficAccidentsChart() {
       </div>
       
       <div className="flex justify-center mb-6">
-        <Link href="/population">
-          <button 
-            className="bg-[#D5D5D5] w-14 h-14 rounded-md flex items-center justify-center"
-            aria-label="More information about traffic accidents"
-          >
-            <span className="text-3xl font-semibold text-gray-900">i</span>
-          </button>
-        </Link>
+        <button 
+          className="bg-[#D5D5D5] w-14 h-14 rounded-md flex items-center justify-center"
+          aria-label="More information about traffic accidents"
+        >
+          <span className="text-3xl font-semibold text-gray-900">i</span>
+        </button>
       </div>
     </Card>
   );
@@ -375,11 +373,21 @@ export default function CityPage() {
     <div className="min-h-screen bg-[var(--page-background)] text-[#D5D5D5]">
       {/* Header */}
       <header className="p-4 flex items-center gap-6 border-b border-gray-800 text-[#D5D5D5]">
-        <Link href="/" className="flex items-center gap-2 text-[#D5D5D5]">
+        <Link href="/"
+              className="flex items-center gap-2 text-[#D5D5D5]">
           <HomeIcon />
           Home
+
         </Link>
-        <Link href="/privacy-policy" className="flex items-center gap-2 text-[#D5D5D5] hover:scale-[1.02] transition-transform duration-200">
+        <Link href="/privacy-policy" underline="hover"
+              sx={{
+                color: '#D5D5D5',
+                '&:hover': {
+                  transform: 'scale(1.02)',
+                  transition: 'transform 0.2s ease-in-out',
+                },
+              }}
+              className="flex items-center gap-2 text-[#D5D5D5]">
           <LockIcon/>
           <span>Privacy policy</span>
         </Link>
@@ -501,14 +509,12 @@ export default function CityPage() {
           </div>
           
           <div className="flex justify-center mt-4">
-            <Link href="/population">
-              <button 
-                className="bg-[#D5D5D5] w-14 h-14 rounded-md flex items-center justify-center"
-                aria-label="More information about population statistics"
-              >
-                <span className="text-3xl font-semibold text-gray-900">i</span>
-              </button>
-            </Link>
+            <button 
+              className="bg-[#D5D5D5] w-14 h-14 rounded-md flex items-center justify-center"
+              aria-label="More information about population statistics"
+            >
+              <span className="text-3xl font-semibold text-gray-900">i</span>
+            </button>
           </div>
         </Card>
 
@@ -519,11 +525,6 @@ export default function CityPage() {
       
       {/* Footer with data source information */}
       <footer className="p-4 border-t border-gray-800 text-center text-sm text-gray-500">
-        <div className="flex justify-center my-8">
-          <Link href="/population" className="text-[#8B5CF6] hover:text-[#7C3AED] transition-colors flex items-center gap-2 px-4 py-2 text-lg font-medium hover:bg-opacity-10 hover:bg-purple-500 rounded-md">
-            View detailed statistics <span className="text-xl">➔</span>
-          </Link>
-        </div>
         <p>Data sourced from Statistics Finland (Tilastokeskus) | Last updated: {city.lastUpdated}</p>
         <p className="mt-1">© 2024 Finland Open Data Project</p>
       </footer>
