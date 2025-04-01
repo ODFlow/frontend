@@ -54,6 +54,7 @@ const cityData = {
 
 
 function UnemploymentChart() {
+  const params = useParams();
   const years = [2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025];
   const unemploymentData = [6.9, 5.7, 5.2, 9.1, 8.3, 7.6, 6.8, 6.4, 6.1];
   const nationalAvgData = [7.4, 6.6, 6.1, 9.5, 8.9, 8.1, 7.5, 7.2, 6.9];
@@ -174,12 +175,14 @@ function UnemploymentChart() {
 
       
       <div className="flex justify-center mt-4">
-        <button 
-          className="bg-[#D5D5D5] w-14 h-14 rounded-md flex items-center justify-center"
-          aria-label="More information about unemployment data"
-        >
-          <span className="text-3xl font-semibold text-gray-900">i</span>
-        </button>
+        <Link href={`/${params.city}/detailed`}>
+          <button 
+            className="bg-[#D5D5D5] w-14 h-14 rounded-md flex items-center justify-center hover:bg-[#C5C5C5] transition-colors"
+            aria-label="View detailed unemployment statistics"
+          >
+            <span className="text-3xl font-semibold text-gray-900">i</span>
+          </button>
+        </Link>
       </div>
     </Card>
   );
