@@ -302,6 +302,41 @@ export default function CityPage() {
 
 
 
+    const { loading: demographicsLoading,
+            error: demographicsError,
+            data: demographicsData } = useDemographics(cityNameParam);
+
+    const { loading: safetyRatingLoading,
+            error: safetyRatingError,
+            data: safetyRatingData } = useSafetyRating(cityNameParam);
+
+
+    const [averageAge, setAverageAge] = useState(0);
+    const [population, setPopulation] = useState(0);
+    const [safetyRating, setSafetyRating] = useState(0);
+
+
+
+
+    useEffect(() => {
+
+    if (demographicsData) {
+      setPopulation(demographicsData['demographics'][0]['value']);
+      setAverageAge(demographicsData['demographics'][6]['value']);
+
+    }
+
+    if (safetyRatingData) {
+      setSafetyRating(safetyRatingData['safetyRating']['value']);
+    }
+
+
+
+
+  }, [demographicsLoading, demographicsError, demographicsData,
+      safetyRatingLoading, safetyRatingError, safetyRatingData,
+    ]);
+
 
 
   const params = useParams();
