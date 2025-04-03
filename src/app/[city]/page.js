@@ -53,7 +53,8 @@ const cityData = {
 
 
 
-function UnemploymentChart() {
+function UnemploymentChart({ cityNameParam }) {
+  console.log('UnemploymentChart cityNameParam:', cityNameParam);
   const years = [2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025];
   const unemploymentData = [6.9, 5.7, 5.2, 9.1, 8.3, 7.6, 6.8, 6.4, 6.1];
   const nationalAvgData = [7.4, 6.6, 6.1, 9.5, 8.9, 8.1, 7.5, 7.2, 6.9];
@@ -174,18 +175,19 @@ function UnemploymentChart() {
 
       
       <div className="flex justify-center mt-4">
-        <button 
-          className="bg-[#D5D5D5] w-14 h-14 rounded-md flex items-center justify-center"
-          aria-label="More information about unemployment data"
+        <Link 
+          href={`/${cityNameParam}/unemployment`}
+          className="bg-[#6254B5] hover:bg-[#4c4090] text-white px-4 py-2 rounded-lg transition-colors duration-200 flex items-center"
         >
-          <span className="text-3xl font-semibold text-gray-900">i</span>
-        </button>
+          View Details
+        </Link>
       </div>
     </Card>
   );
 }
 
-function TrafficAccidentsChart() {
+function TrafficAccidentsChart({ cityNameParam }) {
+  console.log('TrafficAccidentsChart cityNameParam:', cityNameParam);
   // Sample data for traffic accidents
   const categories = ['Cars', 'Pedestrians', 'Bicycles', 'Public Transport'];
   const accidentData = [45, 15, 28, 12];
@@ -215,7 +217,6 @@ function TrafficAccidentsChart() {
     <Card data-testid="data-card" className="bg-[var(--card-background)] p-6 rounded-lg text-[#D5D5D5] flex flex-col h-full">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold text-[#D5D5D5]">Traffic accidents</h2>
-
       </div>
 
       <div className="h-56 w-full relative" ref={chartContainerRef}>
@@ -234,9 +235,6 @@ function TrafficAccidentsChart() {
               arcLabelMinAngle: 20,
               cx: chartDimensions.width / 2,
               cy: 100,
-
-
-
             }
           ]}
           width={chartDimensions.width}
@@ -254,36 +252,18 @@ function TrafficAccidentsChart() {
               labelStyle: {
                 fill: '#FFFFFF',
               },
-
-
             }
-          }}
-          sx={{
-            [`& .${pieArcLabelClasses.root}`]: {
-              fill: 'white',
-            },
-
-
           }}
         />
       </div>
       
-      <div className="flex-grow"></div>
-      
-      <div className="flex justify-between items-center mb-4">
-        <div>
-          <span className="text-sm text-blue-400">Annual Report</span>
-          <div className="text-xs opacity-70 mt-1">Total incidents: 187</div>
-        </div>
-      </div>
-      
       <div className="flex justify-center mb-6">
-        <button 
-          className="bg-[#D5D5D5] w-14 h-14 rounded-md flex items-center justify-center"
-          aria-label="More information about traffic accidents"
+        <Link 
+          href={`/${cityNameParam}/traffic-accidents`}
+          className="bg-[#6254B5] hover:bg-[#4c4090] text-white px-4 py-2 rounded-lg transition-colors duration-200 flex items-center"
         >
-          <span className="text-3xl font-semibold text-gray-900">i</span>
-        </button>
+          View Details
+        </Link>
       </div>
     </Card>
   );
@@ -291,17 +271,8 @@ function TrafficAccidentsChart() {
 
 export default function CityPage() {
     const theme = useTheme();
-
-    const getSafetyColor = (rating, theme) => {
-      const numericRating = parseInt(rating);
-      if (numericRating >= 80) return theme.palette.success.main;
-      if (numericRating >= 60) return theme.palette.warning.main;
-      return theme.palette.error.main;
-    }
-
     const params = useParams();
     const cityNameParam = params?.city || '';
-    
     const cityKey = typeof cityNameParam === 'string' ? cityNameParam.toLowerCase() : '';
     
     // Get city data or use default values
@@ -315,6 +286,13 @@ export default function CityPage() {
       description: "No information available for this city.",
       lastUpdated: "Unknown"
     };
+
+    const getSafetyColor = (rating, theme) => {
+      const numericRating = parseInt(rating);
+      if (numericRating >= 80) return theme.palette.success.main;
+      if (numericRating >= 60) return theme.palette.warning.main;
+      return theme.palette.error.main;
+    }
 
     // Extract the safety rating as a number (removing % sign if present)
     const safetyRatingValue = parseInt(city.safetyRating, 10) || 72;
@@ -335,7 +313,6 @@ export default function CityPage() {
                 className="flex items-center gap-2 text-[#D5D5D5]">
             <HomeIcon />
             Home
-
           </Link>
           <Link href="/privacy-policy" underline="hover"
                 data-testid="navigation-button"
@@ -447,7 +424,6 @@ export default function CityPage() {
               <h2 className="text-2xl font-bold text-[#D5D5D5]">Population</h2>
             </div>
             
-
             <div className="flex items-center mb-16 px-4">
               <div className="flex-shrink-0 w-16 flex justify-center">
                 <GroupsIcon sx = {{fontSize: '3em'}}/>
@@ -467,17 +443,17 @@ export default function CityPage() {
             </div>
             
             <div className="flex justify-center mt-4">
-              <button 
-                className="bg-[#D5D5D5] w-14 h-14 rounded-md flex items-center justify-center"
-                aria-label="More information about population statistics"
+              <Link 
+                href={`/${cityNameParam}/population`}
+                className="bg-[#6254B5] hover:bg-[#4c4090] text-white px-4 py-2 rounded-lg transition-colors duration-200 flex items-center"
               >
-                <span className="text-3xl font-semibold text-gray-900">i</span>
-              </button>
+                View Details
+              </Link>
             </div>
           </Card>
 
-          <UnemploymentChart />
-          <TrafficAccidentsChart />
+          <UnemploymentChart cityNameParam={cityNameParam} />
+          <TrafficAccidentsChart cityNameParam={cityNameParam} />
 
         </div>
         
