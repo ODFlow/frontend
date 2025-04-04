@@ -6,41 +6,36 @@ import { Card } from "@/components/ui/card"
 import {PieChart} from '@mui/x-charts/PieChart';
 import { LineChart } from '@mui/x-charts/LineChart';
 import {useRef, useState, useEffect} from "react"
-import '../page.css'
+import '../../page.css'
 import GroupsIcon from '@mui/icons-material/Groups';
 import StrollerIcon from '@mui/icons-material/Stroller';
 import ApartmentIcon from '@mui/icons-material/Apartment';
-
 import HomeIcon from '@mui/icons-material/Home';
 import LockIcon from '@mui/icons-material/Lock';
-
 
 import {
   useTrafficAccidentsSum,
   useDemographics,
   useUnemploymentRate,
   useSafetyRating
-} from "../../../lib/hooks/useCityData"
+} from "../../../../lib/hooks/useCityData"
 import PropTypes from "prop-types";
-
-
-
-
+import "./cityPage.css"
 
 const ChartUtils = {
   renderLoadingState: (message = "Loading data...") => (
-      <Card data-testid="data-card" className="bg-[var(--card-background)] p-6 rounded-lg text-[#D5D5D5] flex flex-col h-full items-center justify-center">
-        <div className="text-center">
-          <p className="text-lg mb-2">{message}</p>
+      <Card data-testid="data-card" className="loading-card">
+        <div className="loading-content">
+          <p className="loading-text">{message}</p>
         </div>
       </Card>
   ),
 
   renderErrorState: (message = "Unable to load data") => (
-      <Card data-testid="data-card" className="bg-[var(--card-background)] p-6 rounded-lg text-[#D5D5D5] flex flex-col h-full items-center justify-center">
-        <div className="text-center">
-          <p className="text-lg mb-2">{message}</p>
-          <p className="text-sm opacity-70">Please try again later</p>
+      <Card data-testid="data-card" className="error-card">
+        <div className="error-content">
+          <p className="error-text">{message}</p>
+          <p className="error-subtext">Please try again later</p>
         </div>
       </Card>
   ),
@@ -83,18 +78,18 @@ const ChartUtils = {
 
 function ChartContainer({ title, children, updatedYear = "2025" }) {
   return (
-      <Card data-testid="data-card" className="bg-[var(--card-background)] p-6 rounded-lg text-[#D5D5D5] flex flex-col h-full">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold text-[#D5D5D5]">{title}</h2>
-          <span className="text-sm px-2 py-1 rounded">Updated: {updatedYear}</span>
+      <Card data-testid="data-card" className="chart-container">
+        <div className="chart-header">
+          <h2 className="chart-title">{title}</h2>
+          <span className="chart-update-info">Updated: {updatedYear}</span>
         </div>
         {children}
-        <div className="flex justify-center mt-4">
+        <div className="info-button-container">
           <button
-              className="bg-[#D5D5D5] w-14 h-14 rounded-md flex items-center justify-center"
+              className="info-button"
               aria-label={`More information about ${title.toLowerCase()}`}
           >
-            <span className="text-3xl font-semibold text-gray-900">i</span>
+            <span className="info-button-text">i</span>
           </button>
         </div>
       </Card>
@@ -106,9 +101,6 @@ ChartContainer.propTypes = {
   children: PropTypes.node.isRequired,
   updatedYear: PropTypes.string,
 }
-
-
-
 
 
 function LineChartComponent({ years, series, chartDimensions }) {
@@ -167,9 +159,6 @@ LineChartComponent.propTypes = {
     height: PropTypes.number.isRequired
   }).isRequired
 };
-
-
-
 
 
 function UnemploymentChart() {
@@ -239,7 +228,7 @@ function UnemploymentChart() {
 
   return (
       <ChartContainer title="Unemployment">
-        <div className="h-64 w-full relative" ref={chartContainerRef}>
+        <div className="chart-wrapper" ref={chartContainerRef}>
           <LineChartComponent
               years={chartData.years}
               series={series}
@@ -298,7 +287,7 @@ function TrafficAccidents() {
 
   return (
       <ChartContainer title="Traffic accidents">
-        <div className="h-64 w-full relative" ref={chartContainerRef}>
+        <div className="chart-wrapper" ref={chartContainerRef}>
           <LineChartComponent
               years={chartData.years}
               series={series}
@@ -310,65 +299,44 @@ function TrafficAccidents() {
 }
 
 
-
-
-
-
 export default function CityPage() {
-    const theme = useTheme();
-    const params = useParams();
-    const cityNameParam = params?.city || '';
+  const theme = useTheme();
+  const params = useParams();
+  const cityNameParam = params?.city || '';
 
-    const getSafetyColor = (rating, theme) => {
-
+  const getSafetyColor = (rating, theme) => {
     if (rating >= 80) return theme.palette.customValues.safetyRatingColors.excellent;
     if (rating >= 60) return theme.palette.customValues.safetyRatingColors.good;
     if (rating >= 40) return theme.palette.customValues.safetyRatingColors.average;
     return theme.palette.customValues.safetyRatingColors.poor;
   }
 
+  const { loading: demographicsLoading,
+    error: demographicsError,
+    data: demographicsData } = useDemographics(cityNameParam);
 
+  const { loading: safetyRatingLoading,
+    error: safetyRatingError,
+    data: safetyRatingData } = useSafetyRating(cityNameParam);
 
-    const { loading: demographicsLoading,
-            error: demographicsError,
-            data: demographicsData } = useDemographics(cityNameParam);
+  const [averageAge, setAverageAge] = useState(0);
+  const [population, setPopulation] = useState(0);
+  const [safetyRating, setSafetyRating] = useState(0);
 
-    const { loading: safetyRatingLoading,
-            error: safetyRatingError,
-            data: safetyRatingData } = useSafetyRating(cityNameParam);
-
-
-    const [averageAge, setAverageAge] = useState(0);
-    const [population, setPopulation] = useState(0);
-    const [safetyRating, setSafetyRating] = useState(0);
-
-
-
-
-    useEffect(() => {
-
+  useEffect(() => {
     if (demographicsData) {
       setPopulation(demographicsData['demographics'][0]['value']);
       setAverageAge(demographicsData['demographics'][6]['value']);
-
     }
 
     if (safetyRatingData) {
       setSafetyRating(safetyRatingData['safetyRating']['value']);
     }
-
-
-
-
   }, [demographicsLoading, demographicsError, demographicsData,
-      safetyRatingLoading, safetyRatingError, safetyRatingData,
-    ]);
-
-
-
+    safetyRatingLoading, safetyRatingError, safetyRatingData]);
 
   const safetyColor = getSafetyColor(safetyRating, theme);
-  
+
   // Prepare data for the PieChart
   const safetyData = [
     { id: 0, value: safetyRating, color: safetyColor },
@@ -376,157 +344,129 @@ export default function CityPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-[var(--page-background)] text-[#D5D5D5]">
-      {/* Header */}
-      <header className="p-4 flex items-center gap-6 border-b border-gray-800 text-[#D5D5D5]">
-        <Link href="/"
-              data-testid="navigation-button"
-              className="flex items-center gap-2 text-[#D5D5D5]">
-          <HomeIcon />
-          Home
-
-        </Link>
-        <Link href="/" underline="hover"
-              data-testid="navigation-button"
-              sx={{
-                color: '#D5D5D5',
-                '&:hover': {
-                  transform: 'scale(1.02)',
-                  transition: 'transform 0.2s ease-in-out',
-                },
-              }}
-              className="flex items-center gap-2 text-[#D5D5D5]">
-          <LockIcon/>
-          <span>Privacy policy</span>
-        </Link>
-        <div className="ml-auto relative">
-          <input 
-            type="search" 
-            placeholder="Search" 
-            className="bg-[var(--card-background)] text-[#D5D5D5] px-4 py-2 rounded-md pl-10 w-64"
-          />
-          <span className="absolute left-3 top-2.5">🔍</span>
-        </div>
-      </header>
-
-      {/* Main content grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-6">
-        
-        
-        <Card data-testid="data-card" className="p-6 rounded-lg text-[#D5D5D5] flex flex-col h-full"
-        style={{
-          background: theme.palette.background.paper,
-        }}>
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-bold text-[#D5D5D5]">Safety rating</h2>
-            <span className="text-sm px-2 py-1 rounded">--</span>
-          </div>
-          <p className="text-sm opacity-70 mb-6">National average: --</p>
-          
-          <div className="flex justify-center items-center relative" style={{ height: "200px" }}>
-            <PieChart
-              series={[
-                {
-                  data: safetyData,
-                  innerRadius: 80,
-                  outerRadius: 100,
-                  paddingAngle: 0,
-                  cornerRadius: 4,
-                  startAngle: -90,
-                  endAngle: 90,
-                  cx: 100,
-                  cy: 100,
-                  highlightScope: { faded: 'global', highlighted: 'item' },
-                  faded: { innerRadius: 80, additionalRadius: -2, color: 'gray' },
-                }
-              ]}
-
-              width={200}
-              height={200}
-
-              slotProps={{
-                legend: { hidden: true },
-
-              }}
-              sx={{
-                filter: 'drop-shadow(0px 4px 6px rgba(106, 13, 173, 0.3))'
-              }}
+      <div className="page-container">
+        {/* Header */}
+        <header className="page-header">
+          <Link href="/public" data-testid="navigation-button" className="nav-link">
+            <HomeIcon />
+            Home
+          </Link>
+          <Link href="/public" data-testid="navigation-button" className="nav-link">
+            <LockIcon/>
+            <span>Privacy policy</span>
+          </Link>
+          <div className="search-container">
+            <input
+                type="search"
+                placeholder="Search"
+                className="search-input"
             />
+            <span className="search-icon">🔍</span>
+          </div>
+        </header>
 
-            {/* Overlay the percentage text */}
-            <div className="absolute flex flex-col items-center" style={{ textAlign: 'center' }}>
-              <span className="text-3xl font-bold text-[#D5D5D5]"> {safetyRating}% </span>
+        {/* Main content grid */}
+        <div className="content-grid">
+          <Card data-testid="data-card" className="safety-card" style={{ background: theme.palette.background.paper }}>
+            <div className="card-header">
+              <h2 className="card-title">Safety rating</h2>
+              <span className="card-update-info">--</span>
             </div>
-          </div>
-          
-          <div className="flex justify-center mt-4">
-            <button
-              className="bg-[#D5D5D5] w-14 h-14 rounded-md flex items-center justify-center"
-              aria-label="More information about safety rating"
-            >
-              <span className="text-3xl font-semibold text-gray-900">i</span>
-            </button>
-          </div>
-        </Card>
+            <p className="national-average">National average: --</p>
 
+            <div className="pie-chart-container">
+              <PieChart
+                  series={[
+                    {
+                      data: safetyData,
+                      innerRadius: 80,
+                      outerRadius: 100,
+                      paddingAngle: 0,
+                      cornerRadius: 4,
+                      startAngle: -90,
+                      endAngle: 90,
+                      cx: 100,
+                      cy: 100,
+                      highlightScope: { faded: 'global', highlighted: 'item' },
+                      faded: { innerRadius: 80, additionalRadius: -2, color: 'gray' },
+                    }
+                  ]}
+                  width={200}
+                  height={200}
+                  slotProps={{
+                    legend: { hidden: true },
+                  }}
+                  sx={{
+                    filter: 'drop-shadow(0px 4px 6px rgba(106, 13, 173, 0.3))'
+                  }}
+              />
 
-        <Card data-testid="data-card" style={{background: theme.palette.background.paper}} className="p-6 rounded-lg flex flex-col items-center justify-between text-[#D5D5D5] md:row-span-2">
-          <h1 className="text-4xl font-bold mt-10 text-[#D5D5D5]">{cityNameParam}</h1>
-          
-          <div className="flex items-center gap-2">
-            <ApartmentIcon sx = {{fontSize: '8em' }} />
-          </div>
-          <div className="w-full flex justify-center mt-4"/>
-
-
-        </Card>
-
-
-        {/* Population card */}
-        <Card data-testid="data-card" style={{background: theme.palette.background.paper}} className="p-6 rounded-lg text-[#D5D5D5] flex flex-col h-full">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-bold text-[#D5D5D5]">Population</h2>
-          </div>
-          
-
-          <div className="flex items-center mb-16 px-4">
-            <div className="flex-shrink-0 w-16 flex justify-center">
-              <GroupsIcon sx = {{fontSize: '3em'}}/>
+              <div className="percentage-overlay">
+                <span className="percentage-text">{safetyRating}%</span>
+              </div>
             </div>
-            <div className="flex-grow flex justify-center">
-              <span style = {{fontSize: '2em', fontWeight: 'bold'}}> {population} </span>
-            </div>
-          </div>
-          
-          <div className="flex items-center mb-16 px-4">
-            <div className="flex-shrink-0 w-16 flex justify-center">
-              <StrollerIcon sx = {{fontSize: '3em'}}/>
-            </div>
-            <div className="flex-grow flex justify-center">
-              <span style = {{fontSize: '2em', fontWeight: 'bold'}}> {averageAge} </span>
-            </div>
-          </div>
-          
-          <div className="flex justify-center mt-4">
-            <button 
-              className="bg-[#D5D5D5] w-14 h-14 rounded-md flex items-center justify-center"
-              aria-label="More information about population statistics"
-            >
-              <span className="text-3xl font-semibold text-gray-900">i</span>
-            </button>
-          </div>
-        </Card>
 
-        <UnemploymentChart />
-        <TrafficAccidents />
+            <div className="info-button-container">
+              <button
+                  className="info-button"
+                  aria-label="More information about safety rating"
+              >
+                <span className="info-button-text">i</span>
+              </button>
+            </div>
+          </Card>
 
+          <Card data-testid="data-card" className="city-card" style={{ background: theme.palette.background.paper }}>
+            <h1 className="city-name">{cityNameParam}</h1>
+
+            <div className="city-icon-container">
+              <ApartmentIcon sx={{ fontSize: '8em' }} />
+            </div>
+          </Card>
+
+          {/* Population card */}
+          <Card data-testid="data-card" className="population-card" style={{ background: theme.palette.background.paper }}>
+            <div className="card-header">
+              <h2 className="card-title">Population</h2>
+            </div>
+
+            <div className="stat-container">
+              <div className="stat-icon">
+                <GroupsIcon sx={{ fontSize: '3em' }}/>
+              </div>
+              <div className="stat-value">
+                <span className="stat-number">{population}</span>
+              </div>
+            </div>
+
+            <div className="stat-container">
+              <div className="stat-icon">
+                <StrollerIcon sx={{ fontSize: '3em' }}/>
+              </div>
+              <div className="stat-value">
+                <span className="stat-number">{averageAge}</span>
+              </div>
+            </div>
+
+            <div className="info-button-container">
+              <button
+                  className="info-button"
+                  aria-label="More information about population statistics"
+              >
+                <span className="info-button-text">i</span>
+              </button>
+            </div>
+          </Card>
+
+          <UnemploymentChart />
+          <TrafficAccidents />
+        </div>
+
+        {/* Footer with data source information */}
+        <footer className="page-footer">
+          <p>Data sourced from Statistics Finland (Tilastokeskus) | Last updated: --</p>
+          <p className="footer-copyright">© 2024 Finland Open Data Project</p>
+        </footer>
       </div>
-      
-      {/* Footer with data source information */}
-      <footer className="p-4 border-t border-gray-800 text-center text-sm text-gray-500">
-        <p>Data sourced from Statistics Finland (Tilastokeskus) | Last updated: --</p>
-        <p className="mt-1">© 2024 Finland Open Data Project</p>
-      </footer>
-    </div>
   )
-} 
+}
