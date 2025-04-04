@@ -1,4 +1,3 @@
-// src/components/city/SafetyCard.jsx
 import { useState, useEffect } from "react";
 import { useTheme } from '@mui/material/styles';
 import { Card } from "@/components/ui/card";
@@ -55,6 +54,7 @@ export default function SafetyCard({ cityName }) {
 
             <div className="pie-chart-container">
                 <PieChart
+                    data-testid="safety-rating-chart"
                     series={[
                         {
                             data: safetyData,

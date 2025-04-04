@@ -1,4 +1,3 @@
-// src/components/city/UnemploymentChart.jsx
 import { useRef, useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import ChartContainer from "./ChartContainer";
@@ -74,7 +73,7 @@ export default function UnemploymentChart() {
 
     return (
         <ChartContainer title="Unemployment">
-            <div className="chart-wrapper" ref={chartContainerRef}>
+            <div data-testid="unemployment-chart" className="chart-wrapper" ref={chartContainerRef}>
                 <LineChartComponent
                     years={chartData.years}
                     series={series}

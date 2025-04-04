@@ -1,4 +1,3 @@
-// src/components/city/TrafficAccidentsChart.jsx
 import { useRef, useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import ChartContainer from "./ChartContainer";
@@ -55,7 +54,7 @@ export default function TrafficAccidentsChart() {
     return (
 
         <ChartContainer title="Traffic accidents">
-            <div className="chart-wrapper" ref={chartContainerRef}>
+            <div data-testid="traffic-accidents-chart" className="chart-wrapper" ref={chartContainerRef}>
                 <LineChartComponent
                     years={chartData.years}
                     series={series}
