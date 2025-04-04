@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 
 const cities = ["oulu", "rovaniemi", "espoo"];
-const hidden_cities = ["stockholm", "tallin"];
+const hiddenCities = ["stockholm", "tallin"];
 
 
 // Test map page
