@@ -6,7 +6,7 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import HomeIcon from "@mui/icons-material/Home";
+import MapsHomeWorkIcon from '@mui/icons-material/MapsHomeWork';
 import Link from "next/link";
 import { useTheme } from "@mui/material/styles";
 
@@ -181,7 +181,7 @@ export default function FinlandMap() {
 						onClick={() => handleCityClick(city)}
 					>
 						<div className="mr-[3%]">
-							<HomeIcon sx={{ color: "#FFFFFF" }} />
+							<MapsHomeWorkIcon sx={{ color: "#FFFFFF" }} />
 						</div>
 						<span>{city.name}</span>
 					</button>
