@@ -1,0 +1,155 @@
+@import "tailwindcss";
+.page-container {
+    @apply min-h-screen bg-[#121212] text-[#D5D5D5];
+}
+
+/* Header Styles */
+.page-header {
+    @apply flex items-center gap-6 border-b border-gray-800 text-[#D5D5D5];
+}
+
+.nav-link {
+    @apply flex items-center gap-2 text-[#D5D5D5];
+}
+
+.nav-link:hover {
+    @apply transform scale-105 transition-transform duration-200 ease-in-out;
+}
+
+.search-container {
+    @apply ml-auto relative;
+}
+
+
+.search-input {
+    @apply bg-[#1E1E1E] text-[#D5D5D5] px-4 py-2 rounded-md pl-10 w-64;
+}
+
+.search-icon {
+    @apply absolute left-3 top-2.5;
+}
+
+/* Grid Layout */
+.content-grid {
+    @apply grid grid-cols-1 md:grid-cols-3 gap-6 p-6;
+}
+
+/* Common Card Styles */
+.loading-card, .error-card, .chart-container, .safety-card, .city-card, .population-card {
+    @apply p-6 rounded-lg text-[#D5D5D5] flex flex-col h-full;
+}
+
+.card-header {
+    @apply flex justify-between items-center mb-6;
+}
+
+.card-title {
+    @apply text-2xl font-bold text-[#D5D5D5];
+}
+
+.card-update-info {
+    @apply text-sm px-2 py-1 rounded;
+}
+
+/* Loading and Error States */
+.loading-content, .error-content {
+    @apply text-center;
+}
+
+.loading-text, .error-text {
+    @apply text-lg mb-2;
+}
+
+.error-subtext {
+    @apply text-sm opacity-70;
+}
+
+/* Chart Specific Styles */
+.chart-container {
+    @apply bg-[#1E1E1E];
+}
+
+.chart-header {
+    @apply flex justify-between items-center mb-6;
+}
+
+.chart-title {
+    @apply text-2xl font-bold text-[#D5D5D5];
+}
+
+.chart-update-info {
+    @apply text-sm px-2 py-1 rounded;
+}
+
+.chart-wrapper {
+    @apply h-64 w-full relative;
+}
+
+/* Info Button Styles */
+.info-button-container {
+    @apply flex justify-center mt-4;
+}
+
+.info-button {
+    @apply bg-[#D5D5D5] w-14 h-14 rounded-md flex items-center justify-center;
+}
+
+.info-button-text {
+    @apply text-3xl font-semibold text-gray-900;
+}
+
+/* Safety Card Specific Styles */
+.national-average {
+    @apply text-sm opacity-70 mb-6;
+}
+
+.pie-chart-container {
+    @apply flex justify-center items-center relative h-[200px];
+}
+
+.percentage-overlay {
+    @apply absolute flex flex-col items-center text-center;
+}
+
+.percentage-text {
+    @apply text-3xl font-bold text-[#D5D5D5];
+}
+
+/* City Card Specific Styles */
+.city-card {
+    @apply flex flex-col items-center  justify-center md:row-span-2;
+}
+
+.city-name {
+    @apply text-4xl font-bold mt-10 text-[#D5D5D5];
+}
+
+.city-info{
+    @apply mt-10 text-center text-sm text-gray-500;
+}
+
+/* Population Card Specific Styles */
+.stat-container {
+    @apply flex items-center mb-16 px-4;
+}
+
+.stat-icon {
+    @apply flex-shrink-0 w-16 flex justify-center;
+}
+
+.stat-value {
+    @apply flex-grow flex justify-center;
+}
+
+.stat-number {
+    @apply text-[2em] font-bold;
+}
+
+/* Footer Styles */
+.page-footer {
+    @apply border-t border-gray-800 text-center text-sm text-gray-500;
+}
+
+.footer-copyright {
+    @apply mt-1;
+}
