@@ -1,4 +1,3 @@
-// src/components/city/PopulationCard.jsx
 import { useState, useEffect } from "react";
 import { useTheme } from '@mui/material/styles';
 import { Card } from "@/components/ui/card";
@@ -45,7 +44,7 @@ export default function PopulationCard({ cityName }) {
                     <GroupsIcon sx={{ fontSize: '3em' }}/>
                 </div>
                 <div className="stat-value">
-                    <span className="stat-number">{Math.round(population / 1000)}k</span>
+                    <span data-testid="population-stats" className="stat-number">{Math.round(population / 1000)}k</span>
                 </div>
             </div>
 
@@ -54,7 +53,7 @@ export default function PopulationCard({ cityName }) {
                     <ElevatorIcon sx={{ fontSize: '3em' }}/>
                 </div>
                 <div className="stat-value">
-                    <span className="stat-number">{averageAge} years</span>
+                    <span data-testid="population-stats" className="stat-number">{averageAge} years</span>
                 </div>
             </div>
 

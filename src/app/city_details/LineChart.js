@@ -1,4 +1,3 @@
-// src/components/common/LineChartComponent.jsx
 import PropTypes from "prop-types";
 import { LineChart } from '@mui/x-charts/LineChart';
 
