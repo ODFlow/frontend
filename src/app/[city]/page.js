@@ -367,10 +367,6 @@ export default function CityPage() {
 
 
 
-  
-
-  const cityKey = typeof cityNameParam === 'string' ? cityNameParam.toLowerCase() : '';
-
   const safetyColor = getSafetyColor(safetyRating, theme);
   
   // Prepare data for the PieChart
@@ -390,7 +386,7 @@ export default function CityPage() {
           Home
 
         </Link>
-        <Link href="/privacy-policy" underline="hover"
+        <Link href="/" underline="hover"
               data-testid="navigation-button"
               sx={{
                 color: '#D5D5D5',
@@ -475,21 +471,14 @@ export default function CityPage() {
 
 
         <Card data-testid="data-card" style={{background: theme.palette.background.paper}} className="p-6 rounded-lg flex flex-col items-center justify-between text-[#D5D5D5] md:row-span-2">
-          <h1 className="text-4xl font-bold mt-10 text-[#D5D5D5]">--</h1>
+          <h1 className="text-4xl font-bold mt-10 text-[#D5D5D5]">{cityNameParam}</h1>
           
-          <div className="my-8 relative">
+          <div className="flex items-center gap-2">
             <ApartmentIcon sx = {{fontSize: '8em' }} />
           </div>
-          
-          <p className="text-center text-sm mb-4 text-[#D5D5D5]">
-            --
-          </p>
-          
-          <div className="w-full flex justify-center mt-4">
-            <Link href={`/city/${cityKey}/details`} className="text-blue-400 text-sm hover:underline">
-              View detailed statistics →
-            </Link>
-          </div>
+          <div className="w-full flex justify-center mt-4"/>
+
+
         </Card>
 
 
