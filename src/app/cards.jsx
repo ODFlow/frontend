@@ -1,4 +1,8 @@
 import {useEffect, useState} from 'react';
+import {LinearProgress} from "@mui/material";
+import './cards.css'
+import PropTypes from "prop-types";
+
 import Button from '@mui/material/Button';
 import HomeIcon from '@mui/icons-material/Home';
 import WbSunnyIcon from '@mui/icons-material/WbSunny';
@@ -35,11 +39,9 @@ import HealthAndSafetyIcon from '@mui/icons-material/HealthAndSafety';
 import CabinIcon from '@mui/icons-material/Cabin';
 import VillaIcon from '@mui/icons-material/Villa';
 import BungalowIcon from '@mui/icons-material/Bungalow';
-import {LinearProgress} from "@mui/material";
-import './Cards.css'
 
 
-// Icon mapping object - add more icons as needed
+
 const iconComponents = {
     home: HomeIcon,
     farm: ForestIcon,
@@ -105,6 +107,16 @@ export default function Cards({
 
 
     const [selectedOptions, setSelectedOptions] = useState({});
+
+    useEffect(() => {
+        const savedOptions = localStorage.getItem('selectedOptions');
+        if (savedOptions) {
+            setSelectedOptions(JSON.parse(savedOptions));
+        }
+    }, [])
+
+
+
     const handleSelect = (questionId, optionId) => {
         setSelectedOptions(prev => {
             const currentSelections = prev[questionId] || [];
@@ -137,7 +149,10 @@ export default function Cards({
 
     useEffect(() => {
         console.log(selectedOptions);
+        localStorage.setItem('selectedOptions', JSON.stringify(selectedOptions));
     }, [selectedOptions]);
+
+
 
     const optionButtonStyle = (isSelected) => ({
         backgroundColor: '#353535',
@@ -247,5 +262,22 @@ export default function Cards({
             </div>
         </div>
     );
+}
+
+Cards.propTypes = {
+    questionNumber: PropTypes.string.isRequired,
+    questionID: PropTypes.string.isRequired,
+    totalQuestions: PropTypes.number.isRequired,
+    questionTitle: PropTypes.string.isRequired,
+    options: PropTypes.arrayOf(PropTypes.shape({
+            id: PropTypes.string.isRequired,
+            icon: PropTypes.string.isRequired,
+            label: PropTypes.string.isRequired,
+        })
+    ).isRequired,
+    onNext: PropTypes.func.isRequired,
+    onBack: PropTypes.func.isRequired,
+    showBackButton: PropTypes.bool.isRequired,
+
 }
 
