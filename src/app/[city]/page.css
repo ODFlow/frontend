@@ -1,4 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Flow+Circular&display=swap');
 @import "tailwindcss";
+
+
 .page-container {
     @apply min-h-screen bg-[#121212] text-[#D5D5D5];
 }
