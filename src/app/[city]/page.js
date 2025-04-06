@@ -8,6 +8,7 @@ import CityInfoCard from "../city_details/CityInfoCard";
 import PopulationCard from "../city_details/PopulationCard";
 import UnemploymentChart from "../city_details/UnemploymentChart";
 import TrafficAccidentsChart from "../city_details/TrafficAccidentsChart";
+import {LoadingProvider} from "@/app/city_details/LoadingContext";
 
 import "./page.css";
 
@@ -20,11 +21,13 @@ export default function CityPage() {
         <CityHeader />
 
         <div className="content-grid">
-          <SafetyCard cityName={cityNameParam} />
-          <CityInfoCard cityName={cityNameParam} />
-          <PopulationCard cityName={cityNameParam} />
-          <UnemploymentChart />
-          <TrafficAccidentsChart />
+            <LoadingProvider>
+                <SafetyCard cityName={cityNameParam} />
+                <CityInfoCard cityName={cityNameParam} />
+                <PopulationCard cityName={cityNameParam} />
+                <UnemploymentChart />
+                <TrafficAccidentsChart />
+            </LoadingProvider>
         </div>
 
         <CityFooter />

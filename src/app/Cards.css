@@ -1,0 +1,49 @@
+@import "tailwindcss";
+.card-selector-container {
+    @apply min-h-screen bg-[#1E1E1E] text-white flex flex-col items-center p-6;
+}
+
+/* Content wrapper */
+.card-content-wrapper {
+    @apply w-full max-w-4xl;
+}
+
+
+.header-with-icon {
+    @apply flex items-center mb-6;
+}
+
+.header-icon-text {
+    @apply ml-2;
+}
+
+
+.question-container {
+    @apply flex flex-col items-center gap-8 mt-8;
+}
+
+.question-header {
+    @apply text-center w-full;
+}
+
+.question-progress-text {
+    @apply text-sm opacity-60 mb-2;
+}
+
+.progress-bar {
+    @apply w-1/2 mx-auto mt-6;
+}
+
+.question-title {
+    @apply text-3xl font-bold;
+}
+
+
+.options-grid {
+    @apply flex flex-wrap justify-center gap-6 w-full;
+}
+
+
+.navigation-buttons {
+    @apply flex justify-between w-full mt-6;
+}

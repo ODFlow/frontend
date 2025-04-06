@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-
+import Questionnaire from "./Questions";
 const FinlandMap = dynamic(() => import("../components/finland-map.js"), {
 	ssr: false,
 });

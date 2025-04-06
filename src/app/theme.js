@@ -13,12 +13,7 @@ const theme = createTheme({
 			default: "#121212",
 			paper: "#1E1E1E",
 		},
-		text: {
-			primary: {
-				main: "#FFFFFF",
-				secondary: "#6254b5",
-			},
-		},
+
 
 		customValues: {
 			safetyRatingColors: {
