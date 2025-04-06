@@ -104,12 +104,6 @@ export default function FinlandMap() {
 						<span>{city.name}</span>
 					</button>
 				))}
-
-				{selectedCity && (
-					<div className="mt-8 p-4 bg-[#1E1E1E] rounded-lg">
-						<h2 className="text-xl font-bold mb-4">{selectedCity.name}</h2>
-					</div>
-				)}
 			</div>
 
 			<footer className="absolute bottom-0 left-0 right-0 p-4 flex justify-center space-x-8 bg-black bg-opacity-70">
