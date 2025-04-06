@@ -1,13 +1,15 @@
-import { useState, useEffect } from "react";
+import {useState, useEffect} from "react";
 import { useTheme } from '@mui/material/styles';
 import { Card } from "@/components/ui/card";
 import { PieChart } from '@mui/x-charts/PieChart';
 import { useSafetyRating } from "../../../lib/hooks/useCityData";
-import { renderLoadingState, renderErrorState, createChartSeries, useChartDimensions } from "./ChartUtils";
+import { renderLoadingState, renderErrorState } from "./ChartUtils";
+import { useLoading} from "@/app/city_details/LoadingContext";
 
 export default function SafetyCard({ cityName }) {
     const theme = useTheme();
     const [safetyRating, setSafetyRating] = useState(0);
+    const { toggleLoading } = useLoading();
 
     const {
         loading: safetyRatingLoading,
@@ -20,6 +22,11 @@ export default function SafetyCard({ cityName }) {
             setSafetyRating(safetyRatingData['safetyRating']['value']);
         }
     }, [safetyRatingLoading, safetyRatingError, safetyRatingData]);
+
+    useEffect(() => {
+        toggleLoading(safetyRatingLoading);
+        console.log("AA", safetyRatingData);
+    }, [safetyRatingLoading, toggleLoading]);
 
     if (safetyRatingLoading) {
         return renderLoadingState();
