@@ -4,7 +4,6 @@ import { useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
-import axios from "axios";
 import { useRouter } from "next/navigation";
 import MapsHomeWorkIcon from '@mui/icons-material/MapsHomeWork';
 import Link from "next/link";
@@ -34,96 +33,15 @@ export default function FinlandMap() {
 	const theme = useTheme();
 	const router = useRouter();
 	const [selectedCity, setSelectedCity] = useState(null);
-	const [populationData, setPopulationData] = useState({});
-	const [loading, setLoading] = useState(false);
 
-	const fetchCityData = async (cityCode) => {
-		setLoading(true);
-		const url =
-			"https://pxdata.stat.fi:443/PxWeb/api/v1/en/StatFin/tyokay/statfin_tyokay_pxt_115b.px";
 
-		const jsonq = {
-			query: [
-				{
-					code: "Alue",
-					selection: {
-						filter: "item",
-						values: [cityCode],
-					},
-				},
-				{
-					code: "Pääasiallinen toiminta",
-					selection: {
-						filter: "item",
-						values: ["SSS"],
-					},
-				},
-				{
-					code: "Sukupuoli",
-					selection: {
-						filter: "item",
-						values: ["1", "2"],
-					},
-				},
-				{
-					code: "Ikä",
-					selection: {
-						filter: "item",
-						values: ["0-17", "18-64", "65-"],
-					},
-				},
-				{
-					code: "Vuosi",
-					selection: {
-						filter: "item",
-						values: ["2023"],
-					},
-				},
-			],
-			response: {
-				format: "json-stat2",
-			},
-		};
-
-		try {
-			const response = await axios.post(url, jsonq);
-			setPopulationData((prev) => ({
-				...prev,
-				[cityCode]: response.data,
-			}));
-		} catch (error) {
-			console.error("Error fetching population data:", error);
-		} finally {
-			setLoading(false);
-		}
-	};
 
 	const handleCityClick = (city) => {
 		setSelectedCity(city);
-		if (!populationData[city.code]) {
-			fetchCityData(city.code);
-		}
 		router.push(`${city.name.toLowerCase()}`);
 	};
 
-	const loadingContent = () => {
-		if (loading) {
-			return <p> Loading... </p>;
-		}
 
-		if (populationData[selectedCity.code]) {
-			return (
-				<div>
-					<p>Population data loaded</p>
-					<pre className="text-xs overflow-x-auto">
-						{JSON.stringify(populationData[selectedCity.code], null, 2)}
-					</pre>
-				</div>
-			);
-		}
-
-		return <p> No data </p>;
-	};
 
 	return (
 		<div
@@ -190,7 +108,6 @@ export default function FinlandMap() {
 				{selectedCity && (
 					<div className="mt-8 p-4 bg-[#1E1E1E] rounded-lg">
 						<h2 className="text-xl font-bold mb-4">{selectedCity.name}</h2>
-						{loadingContent()}
 					</div>
 				)}
 			</div>
