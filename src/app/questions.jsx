@@ -184,7 +184,7 @@ export default function Questions() {
 		setCurrentStep(0);
 
 		setTimeout(() => {
-			router.push("/oulu");
+			router.push("/results");
 		}, 250);
 	};
 

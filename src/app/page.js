@@ -8,7 +8,8 @@ const FinlandMap = dynamic(() => import("../components/finland-map.js"), {
 export default function Home() {
 	return (
 		<div className="h-screen">
-			<FinlandMap />
+			<Questions />
+			{/* <FinlandMap /> */}
 		</div>
 	);
 }
