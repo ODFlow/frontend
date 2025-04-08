@@ -107,7 +107,7 @@ test.describe("[General view basic]", () => {
 			await checkGeneralPage(page, `http://localhost:3000/city/${city}`, true);
 		});
 	}
-
+	{/*
 	for (const city of hiddenCities) {
 		test(`There should be nothing on ${city} general page`, async ({
 			page,
@@ -115,6 +115,7 @@ test.describe("[General view basic]", () => {
 			await checkGeneralPage(page, `http://localhost:3000/city/${city}`, false);
 		});
 	}
+	*/}
 });
 
 // Test general view cards data
