@@ -78,7 +78,8 @@ const iconComponents = {
 	villa: VillaIcon,
 };
 
-// Dynamic icon component that renders the correct MUI icon based on name
+
+
 const DynamicIcon = ({ iconName, ...props }) => {
 	const IconComponent = iconComponents[iconName];
 
@@ -99,6 +100,7 @@ export default function Cards({
 	onNext = () => {},
 	onBack = () => {},
 	showBackButton,
+	isSingleSelect = false,
 }) {
 	const [selectedOptions, setSelectedOptions] = useState({});
 
@@ -111,42 +113,53 @@ export default function Cards({
 
 	const handleSelect = (questionId, optionId) => {
 		setSelectedOptions((prev) => {
-			const currentSelections = prev[questionId] || [];
-
-			if (currentSelections.includes(optionId)) {
+			if (isSingleSelect) {
 				return {
 					...prev,
-					[questionId]: currentSelections.filter((id) => id !== optionId),
+					[questionId]: [optionId],
 				};
 			} else {
-				return {
-					...prev,
-					[questionId]: [...currentSelections, optionId],
-				};
+				const currentSelections = prev[questionId] || [];
+
+				if (currentSelections.includes(optionId)) {
+					return {
+						...prev,
+						[questionId]: currentSelections.filter((id) => id !== optionId),
+					};
+				} else {
+					return {
+						...prev,
+						[questionId]: [...currentSelections, optionId],
+					};
+				}
 			}
 		});
 	};
+
 
 	const isOptionsSelected = (questionId, optionId) => {
 		const s = selectedOptions[questionId] || [];
 		return s.includes(optionId);
 	};
 
+
 	const hasSelections = (questionId) => {
 		return (selectedOptions[questionId] || []).length > 0;
 	};
+
 
 	useEffect(() => {
 		console.log(selectedOptions);
 		localStorage.setItem("selectedOptions", JSON.stringify(selectedOptions));
 	}, [selectedOptions]);
 
+
 	const optionButtonStyle = (isSelected) => ({
-		backgroundColor: "#353535",
-		color: "#fff",
-		width: "10vw", // will be changed
-		height: "20vh", // will be changed
-		borderRadius: "16px",
+		backgroundColor: "#1E1E1E",
+		color: "#FFFFFF",
+		width: "10vw",
+		height: "20vh",
+		borderRadius: "12px",
 		display: "flex",
 		flexDirection: "column",
 		justifyContent: "center",
@@ -155,7 +168,7 @@ export default function Cards({
 		padding: "16px",
 		textTransform: "none",
 		"&:hover": {
-			backgroundColor: "#444444",
+			backgroundColor: "#353535",
 		},
 		...(isSelected && {
 			border: "2px solid #ffffff",
@@ -172,10 +185,11 @@ export default function Cards({
 		},
 	});
 
+
 	const navigationButtonStyle = (isDisabled = false) => ({
 		backgroundColor: "white",
 		color: "black",
-		borderRadius: "24px",
+		borderRadius: "12px",
 		padding: "8px 24px",
 		"&:hover": {
 			backgroundColor: "#e0e0e0",
@@ -267,4 +281,5 @@ Cards.propTypes = {
 	onNext: PropTypes.func.isRequired,
 	onBack: PropTypes.func.isRequired,
 	showBackButton: PropTypes.bool.isRequired,
+	isSingleSelect: PropTypes.bool.isRequired,
 };
