@@ -1,13 +1,13 @@
 // src/components/city/CityPage.jsx
 "use client"
 import { useParams } from "next/navigation"
-import CityHeader from "../city_details/CityHeader";
-import CityFooter from "../city_details/CityFooter";
-import SafetyCard from "../city_details/SafetyCard";
-import CityInfoCard from "../city_details/CityInfoCard";
-import PopulationCard from "../city_details/PopulationCard";
-import UnemploymentChart from "../city_details/UnemploymentChart";
-import TrafficAccidentsChart from "../city_details/TrafficAccidentsChart";
+import CityHeader from "../../city_details/CityHeader";
+import CityFooter from "../../city_details/CityFooter";
+import SafetyCard from "../../city_details/SafetyCard";
+import CityInfoCard from "../../city_details/CityInfoCard";
+import PopulationCard from "../../city_details/PopulationCard";
+import UnemploymentChart from "../../city_details/UnemploymentChart";
+import TrafficAccidentsChart from "../../city_details/TrafficAccidentsChart";
 import {LoadingProvider} from "@/app/city_details/LoadingContext";
 
 import "./page.css";
