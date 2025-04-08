@@ -38,7 +38,7 @@ export default function FinlandMap() {
 
 	const handleCityClick = (city) => {
 		setSelectedCity(city);
-		router.push(`${city.name.toLowerCase()}`);
+		router.push(`/city/${city.name.toLowerCase()}`);
 	};
 
 
