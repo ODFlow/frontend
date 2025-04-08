@@ -32,7 +32,7 @@ test.describe("[City card buttons]", () => {
 		await expect(tampereButton).toBeVisible();
 		await expect(tampereButton).toBeEnabled();
 		await tampereButton.click();
-		await page.waitForURL("http://localhost:3000/tampere");
+		await page.waitForURL("http://localhost:3000/city/tampere");
 	});
 
 	test("Oulu button should be visible and enabled", async ({ page }) => {
@@ -41,7 +41,7 @@ test.describe("[City card buttons]", () => {
 		await expect(ouluButton).toBeVisible();
 		await expect(ouluButton).toBeEnabled();
 		await ouluButton.click();
-		await page.waitForURL("http://localhost:3000/oulu");
+		await page.waitForURL("http://localhost:3000/city/oulu");
 	});
 
 	test("Stockholm button should not be on page", async ({ page }) => {
@@ -104,7 +104,7 @@ test.describe("[General view basic]", () => {
 		test(`There should be 5 cards and 2 working nav buttons on ${city} general page`, async ({
 			page,
 		}) => {
-			await checkGeneralPage(page, `http://localhost:3000/${city}`, true);
+			await checkGeneralPage(page, `http://localhost:3000/city/${city}`, true);
 		});
 	}
 
@@ -112,7 +112,7 @@ test.describe("[General view basic]", () => {
 		test(`There should be nothing on ${city} general page`, async ({
 			page,
 		}) => {
-			await checkGeneralPage(page, `http://localhost:3000/${city}`, false);
+			await checkGeneralPage(page, `http://localhost:3000/city/${city}`, false);
 		});
 	}
 });
@@ -123,13 +123,13 @@ test.describe("[General view cards]", () => {
 		test(`Charts should be visible and show some data for ${city} city`, async ({
 			page,
 		}) => {
-			await checkChartsVisibility(page, `http://localhost:3000/${city}`, true);
+			await checkChartsVisibility(page, `http://localhost:3000/city/${city}`, true);
 		});
 	}
 
 	for (const city of hiddenCities) {
 		test(`Should not be visible for ${city} city`, async ({ page }) => {
-			await checkChartsVisibility(page, `http://localhost:3000/${city}`, false);
+			await checkChartsVisibility(page, `http://localhost:3000/city/${city}`, false);
 		});
 	}
 });
