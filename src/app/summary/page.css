@@ -1,0 +1,159 @@
+@import "tailwindcss";
+.preferences-container {
+    @apply max-w-4xl mx-auto my-8 px-4;
+}
+
+.preferences-paper {
+    @apply bg-[#121212] rounded-xl p-8 shadow-lg;
+}
+
+
+.preferences-title {
+    @apply text-white text-2xl md:text-3xl font-semibold mb-4;
+}
+
+.preferences-description {
+    @apply text-gray-300 md:text-base leading-relaxed pb-6;
+}
+
+/* Table container */
+.table-container {
+    @apply bg-[#353535] rounded-lg mb-8 overflow-hidden;
+}
+
+/* Table header */
+.table-header {
+    @apply grid grid-cols-[80px_1fr_1fr_48px] py-3 px-4 bg-[#1E1E1E] border-b border-white font-semibold text-gray-400 text-sm;
+}
+
+.priority-header, .category-header, .selection-header, .handle-header {
+    @apply flex items-center;
+}
+
+/* Preferences list area - scrollable */
+.preferences-list {
+    @apply max-h-80 overflow-y-auto;
+}
+
+/* Preference row styling */
+.preference-row {
+    @apply flex items-center justify-between py-3.5 px-4 transition-colors duration-150 bg-[#1E1E1E];
+}
+
+.preference-row:hover {
+    @apply bg-[#353535];
+}
+
+.preference-row:last-child {
+    @apply border-b-0;
+}
+
+.preference-row-dragging {
+    @apply bg-[#515151] shadow-md;
+}
+
+/* Row content grid */
+.row-content {
+    @apply grid grid-cols-[80px_1fr_1fr] w-full;
+}
+
+.priority-column, .category-column, .selection-column {
+    @apply flex items-center;
+}
+
+.priority-number {
+    @apply flex items-center justify-center w-8 h-8 bg-[#353535] text-white rounded-full font-semibold;
+}
+
+.category-label {
+    @apply text-white font-medium;
+}
+
+.selection-value {
+    @apply text-gray-200;
+}
+
+/* Drag handle */
+.drag-handle {
+    @apply flex items-center justify-end w-12 cursor-grab text-white;
+}
+
+.drag-handle:active {
+    @apply cursor-grabbing;
+}
+
+/* Drag overlay */
+.drag-overlay {
+    @apply flex items-center justify-between py-3.5 px-4 bg-[#1E1E1E] text-black rounded-lg shadow-lg w-full max-w-4xl;
+}
+
+/* Button container */
+.button-container {
+    @apply flex justify-between mt-8;
+}
+
+
+.button-container .MuiButton-contained {
+    @apply bg-white text-black rounded-xl py-2 px-6 font-semibold shadow-none transition-colors duration-200 min-w-40;
+}
+
+.button-container .MuiButton-contained:hover {
+    @apply bg-gray-100;
+}
+
+.back-button {
+    @apply mr-4;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .preferences-paper {
+        @apply p-6;
+    }
+
+    .table-header {
+        @apply grid-cols-[60px_1fr_1fr_40px] py-3 px-3;
+    }
+
+    .row-content {
+        @apply grid-cols-[60px_1fr_1fr];
+    }
+
+    .button-container {
+        @apply flex-col-reverse gap-4;
+    }
+
+    .button-container .MuiButton-contained {
+        @apply w-full;
+    }
+
+    .back-button {
+        @apply mr-0;
+    }
+}
+
+@media (max-width: 480px) {
+    .table-header {
+        @apply hidden;
+    }
+
+    .preference-row {
+        @apply py-4 px-3;
+    }
+
+    .row-content {
+        @apply grid-cols-[40px_1fr] grid-rows-[auto_auto] gap-y-2;
+    }
+
+    .priority-number {
+        @apply w-7 h-7 text-sm;
+    }
+
+    .category-column {
+        @apply col-span-1 col-start-2 font-semibold;
+    }
+
+    .selection-column {
+        @apply col-span-2 col-start-1 pl-10 text-gray-300 text-sm;
+    }
+}

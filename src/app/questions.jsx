@@ -12,6 +12,7 @@ const steps = [
 			{ id: "rural", icon: "farm", label: "Rural" },
 			{ id: "town", icon: "home", label: "Town" },
 		],
+		isSingleSelect: true,
 	},
 	{
 		questionNumber: 2,
@@ -23,6 +24,7 @@ const steps = [
 			{ id: "mild", icon: "cloud", label: "Mild" },
 			{ id: "cold", icon: "ac_unit", label: "Cold" },
 		],
+		isSingleSelect: true,
 	},
 	{
 		questionNumber: 3,
@@ -34,6 +36,7 @@ const steps = [
 			{ id: "parks", icon: "park", label: "Parks" },
 			{ id: "kindergarten", icon: "child_care", label: "Kindergarten" },
 		],
+		isSingleSelect: false,
 	},
 	{
 		questionNumber: 4,
@@ -45,6 +48,7 @@ const steps = [
 			{ id: "average", icon: "attach_money", label: "Average" },
 			{ id: "high", icon: "account_balance", label: "High" },
 		],
+		isSingleSelect: true,
 	},
 	{
 		questionNumber: 5,
@@ -56,6 +60,7 @@ const steps = [
 			{ id: "important", icon: "security", label: "Important" },
 			{ id: "really_important", icon: "gpp_good", label: "Really important" },
 		],
+		isSingleSelect: true,
 	},
 	{
 		questionNumber: 6,
@@ -75,6 +80,7 @@ const steps = [
 			},
 			{ id: "car", icon: "directions_car", label: "Car" },
 		],
+		isSingleSelect: false,
 	},
 	{
 		questionNumber: 7,
@@ -86,6 +92,7 @@ const steps = [
 			{ id: "important", icon: "business_center", label: "Important" },
 			{ id: "very_important", icon: "engineering", label: "Very important" },
 		],
+		isSingleSelect: true,
 	},
 	{
 		questionNumber: 8,
@@ -97,6 +104,7 @@ const steps = [
 			{ id: "green_spaces", icon: "landscape", label: "Green spaces" },
 			{ id: "near_sea", icon: "waves", label: "Near sea" },
 		],
+		isSingleSelect: false,
 	},
 	{
 		questionNumber: 9,
@@ -108,6 +116,7 @@ const steps = [
 			{ id: "train_station", icon: "train", label: "Train station" },
 			{ id: "airport", icon: "flight", label: "Airport" },
 		],
+		isSingleSelect: true,
 	},
 	{
 		questionNumber: 10,
@@ -119,6 +128,7 @@ const steps = [
 			{ id: "cultural_life", icon: "theater_comedy", label: "Cultural life" },
 			{ id: "outdoor_activities", icon: "hiking", label: "Outdoor activities" },
 		],
+		isSingleSelect: false,
 	},
 	{
 		questionNumber: 11,
@@ -134,6 +144,7 @@ const steps = [
 				label: "Very important",
 			},
 		],
+		isSingleSelect: true,
 	},
 	{
 		questionNumber: 12,
@@ -145,18 +156,21 @@ const steps = [
 			{ id: "affordable", icon: "affordable_house", label: "Affordable" },
 			{ id: "luxury", icon: "villa", label: "Luxury" },
 		],
+		isSingleSelect: true,
 	},
 ];
 
 export default function Questions() {
 	const [currentStep, setCurrentStep] = useState(0);
 	const router = useRouter();
+	const [isInitialized, setIsInitialized] = useState(false);
 
 	useEffect(() => {
 		const savedStep = localStorage.getItem("currentStep");
 		if (savedStep) {
 			setCurrentStep(parseInt(savedStep, 10));
 		}
+		setIsInitialized(true);
 	}, []);
 
 	useEffect(() => {
@@ -178,17 +192,18 @@ export default function Questions() {
 	};
 
 	const clearQuestions = async () => {
-		localStorage.removeItem("currentStep");
-		localStorage.removeItem("selectedOptions");
-
+		//localStorage.removeItem("currentStep");
+		//localStorage.removeItem("selectedOptions");
+		setIsInitialized(true);
 		setCurrentStep(0);
 
 		setTimeout(() => {
-			router.push("/results");
+			router.push("/summary/");
 		}, 250);
 	};
 
 	const currentQuestion = steps[currentStep];
+
 
 	return (
 		<Cards
@@ -200,6 +215,7 @@ export default function Questions() {
 			onNext={handleNext}
 			onBack={handleBack}
 			showBackButton={currentStep > 0}
+			isSingleSelect={currentQuestion.isSingleSelect}
 		/>
 	);
 }

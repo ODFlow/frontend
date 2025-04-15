@@ -1,12 +1,12 @@
 // src/utils/ChartUtils.js
 import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
-import CircularProgress from '@mui/material/CircularProgress';
+import {Skeleton} from "@mui/material";
 
 export const renderLoadingState = () => (
     <Card data-testid="data-card" className="loading-card">
         <div className="loading-content">
-            <CircularProgress />
+            <Skeleton variant="rounded"/>
         </div>
     </Card>
 );
